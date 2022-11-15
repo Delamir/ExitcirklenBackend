@@ -5,7 +5,8 @@ public enum Cities {
     HILLERØD,
     KØGE,
     ODENSE,
-    ÅRHUS,
+    AARHUS,
     ESBJERG,
-    AALBORG
+    AALBORG,
+    NÆSTVED
 }

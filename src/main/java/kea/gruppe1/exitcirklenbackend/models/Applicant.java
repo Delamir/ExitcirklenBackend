@@ -36,6 +36,9 @@ public class Applicant {
     private String city;
 
     @Column
+    private String status;
+
+    @Column
     private int priority;
 
     @Column
