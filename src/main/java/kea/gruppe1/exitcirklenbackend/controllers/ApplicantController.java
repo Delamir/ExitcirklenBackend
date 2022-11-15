@@ -28,10 +28,28 @@ public class ApplicantController {
      * @param id The id from the applicant
      * @return Applicant with provided id or return null
      */
-    @GetMapping("/applicants/{id}")
+    @GetMapping("/applicant/{id}")
     public Applicant getApplicant(@PathVariable Long id) {
         return applicantRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Gets all applicants from a specific status
+     * @param status is the wanted status
+     * @return A list of all applicants with the status in the parameter
+     */
+    @GetMapping("/applicants/{status}")
+    public List<Applicant> getApplicantsByStatus(@PathVariable String status) {
+        return applicantRepository.findApplicantByStatus(status);
+    }
 
+    /**
+     * Gets all applicants from a specified city
+     * @param city is the wanted city
+     * @return A list of all applicants with the specified city
+     */
+    @GetMapping("/applicants/{city}")
+    public List<Applicant> getApplicantsByCity(@PathVariable String city) {
+        return applicantRepository.findApplicantByCity(city);
+    }
 }
