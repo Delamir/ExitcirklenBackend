@@ -1,7 +1,7 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
-import kea.gruppe1.exitcirklenbackend.models.Group;
-import kea.gruppe1.exitcirklenbackend.repositories.GroupRepository;
+import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
+import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +11,14 @@ import java.util.List;
 public class Groups {
 
     @Autowired
-    GroupRepository groupRepository;
+    ApplicantGroupRepository groupRepository;
 
     /**
      *
      * Gets all groups in the database
      */
     @GetMapping("/groups")
-    public List<Group> getGroups() {
+    public List<ApplicantGroup> getGroups() {
         return groupRepository.findAll();
     }
 
@@ -28,17 +28,17 @@ public class Groups {
      * @return group with provided id or return null
      */
     @GetMapping("/groups/{id}")
-    public Group getGroupById(@PathVariable Long id) {
+    public ApplicantGroup getGroupById(@PathVariable Long id) {
         return groupRepository.findById(id).get();
     }
 
     @PostMapping("/groups")
-    public Group addGroup (@RequestBody Group newGroup) {
+    public ApplicantGroup addGroup (@RequestBody ApplicantGroup newGroup) {
         return groupRepository.save(newGroup);
     }
 
     @PutMapping("/groups/{id}")
-    public String updateGroupById(@PathVariable Long id, @RequestBody Group groupToUpdateWith) {
+    public String updateGroupById(@PathVariable Long id, @RequestBody ApplicantGroup groupToUpdateWith) {
         if (groupRepository.existsById(id)) {
             if(!groupToUpdateWith.getId().equals(id)) {
                 groupRepository.deleteById(id);

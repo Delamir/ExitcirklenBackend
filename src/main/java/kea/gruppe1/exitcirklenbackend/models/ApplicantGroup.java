@@ -1,6 +1,5 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +11,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Table(name = "groups")
+@Table(name = "applicant_group")
 @Entity
-public class Group {
+public class ApplicantGroup {
 
     @Id
     @Column
