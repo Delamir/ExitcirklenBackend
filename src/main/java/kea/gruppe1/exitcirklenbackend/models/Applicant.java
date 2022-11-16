@@ -38,6 +38,9 @@ public class Applicant {
 
     @Column
     private String status;
+    
+    @Column
+    private String description;
 
     @Column
     private int priority;
