@@ -38,7 +38,7 @@ public class ApplicantController {
      * @param status is the wanted status
      * @return A list of all applicants with the status in the parameter
      */
-    @GetMapping("/applicants/{status}")
+    @GetMapping("/applicants/status/{status}")
     public List<Applicant> getApplicantsByStatus(@PathVariable String status) {
         return applicantRepository.findApplicantByStatus(status);
     }
@@ -48,7 +48,7 @@ public class ApplicantController {
      * @param city is the wanted city
      * @return A list of all applicants with the specified city
      */
-    @GetMapping("/applicants/{city}")
+    @GetMapping("/applicants/by/{city}")
     public List<Applicant> getApplicantsByCity(@PathVariable String city) {
         return applicantRepository.findApplicantByCity(city);
     }
