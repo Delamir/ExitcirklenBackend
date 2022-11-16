@@ -3,10 +3,7 @@ package kea.gruppe1.exitcirklenbackend.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -36,8 +33,8 @@ public class Applicant {
     @Column
     private String city;
 
-    @Column
-    private String status;
+    @OneToOne
+    private ApplicantStatus status;
     
     @Column
     private String description;
