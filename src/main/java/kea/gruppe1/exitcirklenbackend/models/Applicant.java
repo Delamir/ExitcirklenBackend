@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -33,8 +35,8 @@ public class Applicant {
     @Column
     private String city;
 
-    @OneToOne
-    private ApplicantStatus status;
+    @Column
+    private String status;
     
     @Column
     private String description;
@@ -47,5 +49,13 @@ public class Applicant {
 
     @Column
     private boolean contactText;
+
+    @Column
+    private LocalDateTime lastChanged = LocalDateTime.now();
+
+    public String getAssignedTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return lastChanged.format(formatter);
+    }
 
 }
