@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Table(name = "applicant_group")
+@Table(name = "applicant_groups")
 @Entity
 public class ApplicantGroup {
 
