@@ -3,6 +3,7 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,5 +55,51 @@ public class ApplicantController {
     public Applicant createApplicant(@RequestBody Applicant newApplicant){
         System.out.println(newApplicant.getEmail());
         return applicantRepository.save(newApplicant);
+    }
+
+    /**
+     * Updates only the changed values on the requested applicant
+     * @param id the specific applicants id
+     * @param applicantToUpdate the applicant object which needs to be updated
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
+    @PatchMapping("/applicants/{id}")
+    public HttpStatus updateApplicants(@PathVariable Long id,
+                                       @RequestBody Applicant applicantToUpdate) {
+
+        applicantRepository.findById(id).map(applicant -> {
+            if (applicant.getName() != null) applicant.setName(applicantToUpdate.getName());
+            if (applicant.getAge() != null) applicant.setAge(applicantToUpdate.getAge());
+            if (applicant.getGender() != null) applicant.setGender(applicantToUpdate.getGender());
+            if (applicant.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
+            if (applicant.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
+            if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
+            if (applicant.getStatus() != null) applicant.setStatus(applicantToUpdate.getStatus());
+            if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
+            if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
+            applicant.setContactCall(applicantToUpdate.isContactCall());
+            applicant.setContactText(applicantToUpdate.isContactText());
+            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged());
+
+            applicantRepository.save(applicant);
+            return HttpStatus.OK;
+        });
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    /**
+     * Delete a specific applicant
+     * @param id the applicant id
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
+    @DeleteMapping("/applicants/{id}")
+    public HttpStatus deleteApplicant(@PathVariable Long id) {
+        try {
+            applicantRepository.deleteById(id);
+            return HttpStatus.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
     }
 }
