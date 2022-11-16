@@ -3,12 +3,9 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 public class ApplicantController {
 
@@ -51,5 +48,11 @@ public class ApplicantController {
     @GetMapping("/applicants/by/{city}")
     public List<Applicant> getApplicantsByCity(@PathVariable String city) {
         return applicantRepository.findApplicantByCity(city);
+    }
+
+    @PostMapping("/applicants")
+    public Applicant createApplicant(@RequestBody Applicant newApplicant){
+        System.out.println(newApplicant.getEmail());
+        return applicantRepository.save(newApplicant);
     }
 }
