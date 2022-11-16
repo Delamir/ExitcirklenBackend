@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -39,4 +40,9 @@ public class ApplicantGroup {
 
     @Column
     private LocalDateTime startDate;
+
+    public String getStartDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return startDate.format(formatter);
+    }
 }

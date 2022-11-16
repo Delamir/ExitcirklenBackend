@@ -11,7 +11,7 @@ import java.util.List;
 public class ApplicantGroupController {
 
     @Autowired
-    ApplicantGroupRepository groupRepository;
+    ApplicantGroupRepository applicantGroupRepository;
 
     /**
      *
@@ -19,7 +19,7 @@ public class ApplicantGroupController {
      */
     @GetMapping("/groups")
     public List<ApplicantGroup> getGroups() {
-        return groupRepository.findAll();
+        return applicantGroupRepository.findAll();
     }
 
     /**
@@ -29,25 +29,45 @@ public class ApplicantGroupController {
      */
     @GetMapping("/groups/{id}")
     public ApplicantGroup getGroupById(@PathVariable Long id) {
-        return groupRepository.findById(id).get();
+        return applicantGroupRepository.findById(id).get();
     }
 
     @PostMapping("/groups")
     public ApplicantGroup addGroup (@RequestBody ApplicantGroup newGroup) {
-        return groupRepository.save(newGroup);
+        return applicantGroupRepository.save(newGroup);
     }
 
     @PutMapping("/groups/{id}")
-    public String updateGroupById(@PathVariable Long id, @RequestBody ApplicantGroup groupToUpdateWith) {
-        if (groupRepository.existsById(id)) {
-            if(!groupToUpdateWith.getId().equals(id)) {
-                groupRepository.deleteById(id);
+    public String updateApplicantGroupById(@PathVariable Long id, @RequestBody ApplicantGroup applicantGroupToUpdateWith) {
+        if (applicantGroupRepository.existsById(id)) {
+            if(!applicantGroupToUpdateWith.getId().equals(id)) {
+                applicantGroupRepository.deleteById(id);
             }
-            groupRepository.save(groupToUpdateWith);
+            applicantGroupRepository.save(applicantGroupToUpdateWith);
             return "Group was created";
         } else {
             return "Group not found";
         }
+    }
+
+    @PatchMapping("/groups/{id}")
+    public String PatchApplicantGroupById(@PathVariable Long id, @RequestBody ApplicantGroup applicantGroupToUpdateWith) {
+        return applicantGroupRepository.findById(id).map(foundApplicantGroup -> {
+            if (applicantGroupToUpdateWith.getCity() != null) foundApplicantGroup.setCity(applicantGroupToUpdateWith.getCity());
+            if (applicantGroupToUpdateWith.getName() != null) foundApplicantGroup.setName(applicantGroupToUpdateWith.getName());
+            if (applicantGroupToUpdateWith.getAddress() != null) foundApplicantGroup.setAddress(applicantGroupToUpdateWith.getAddress());
+            if (applicantGroupToUpdateWith.getGroupSize() != null) foundApplicantGroup.setGroupSize(applicantGroupToUpdateWith.getGroupSize());
+            if (applicantGroupToUpdateWith.getAvailableSpots() != null) foundApplicantGroup.setAvailableSpots(applicantGroupToUpdateWith.getAvailableSpots());
+            if (applicantGroupToUpdateWith.getPrice() != null) foundApplicantGroup.setPrice(applicantGroupToUpdateWith.getPrice());
+
+            applicantGroupRepository.save(foundApplicantGroup);
+            return "Applicant group was updated";
+        }).orElse("Applicant group was not found");
+    }
+
+    @DeleteMapping("/groups/{id}")
+        public void deleteApplicantGroupById(@PathVariable Long id) {
+        applicantGroupRepository.deleteById(id);
     }
 
 }
