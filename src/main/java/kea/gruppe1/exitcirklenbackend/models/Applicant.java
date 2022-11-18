@@ -51,5 +51,8 @@ public class Applicant {
     private boolean contactText;
 
     @Column
+    private boolean payedStatus;
+
+    @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
 }
