@@ -53,7 +53,7 @@ public class ApplicantController {
 
     @PostMapping("/applicants")
     public Applicant createApplicant(@RequestBody Applicant newApplicant){
-        System.out.println(newApplicant.getEmail());
+        newApplicant.setStatus("IKKE VISITERET");
         return applicantRepository.save(newApplicant);
     }
 
@@ -76,7 +76,8 @@ public class ApplicantController {
             if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
             if (applicant.getStatus() != null) applicant.setStatus(applicantToUpdate.getStatus());
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
-            if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
+            if (applicant.getPriority() != null) applicant.setPriority(applicantToUpdate.getPriority());
+
             applicant.setContactCall(applicantToUpdate.isContactCall());
             applicant.setContactText(applicantToUpdate.isContactText());
             if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged());

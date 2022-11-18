@@ -43,13 +43,16 @@ public class Applicant {
     private String description;
 
     @Column
-    private int priority;
+    private String priority;
 
     @Column
     private boolean contactCall;
 
     @Column
     private boolean contactText;
+
+    @Column
+    private int userType;
 
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
