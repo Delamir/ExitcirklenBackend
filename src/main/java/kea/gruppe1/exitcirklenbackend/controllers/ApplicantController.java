@@ -76,7 +76,7 @@ public class ApplicantController {
             if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
             if (applicant.getStatus() != null) applicant.setStatus(applicantToUpdate.getStatus());
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
-            if (applicant.getPriority() != null) applicant.setPriority(applicantToUpdate.getPriority());
+            if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
             applicant.setContactCall(applicantToUpdate.isContactCall());
             applicant.setContactText(applicantToUpdate.isContactText());
