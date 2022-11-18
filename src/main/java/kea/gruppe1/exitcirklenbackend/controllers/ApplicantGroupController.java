@@ -14,7 +14,6 @@ public class ApplicantGroupController {
     ApplicantGroupRepository applicantGroupRepository;
 
     /**
-     *
      * Gets all groups in the database
      */
     @GetMapping("/groups")
@@ -29,7 +28,7 @@ public class ApplicantGroupController {
      */
     @GetMapping("/groups/{id}")
     public ApplicantGroup getGroupById(@PathVariable Long id) {
-        return applicantGroupRepository.findById(id).get();
+        return applicantGroupRepository.findById(id).orElse(null);
     }
 
     @PostMapping("/groups")
