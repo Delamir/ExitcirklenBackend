@@ -53,10 +53,4 @@ public class Applicant {
 
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
-
-    public String getAssignedTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return lastChanged.format(formatter);
-    }
-
 }
