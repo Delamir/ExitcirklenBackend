@@ -14,7 +14,6 @@ public class ApplicantGroupController {
     ApplicantGroupRepository applicantGroupRepository;
 
     /**
-     *
      * Gets all groups in the database
      */
     @GetMapping("/groups")
@@ -29,7 +28,7 @@ public class ApplicantGroupController {
      */
     @GetMapping("/groups/{id}")
     public ApplicantGroup getGroupById(@PathVariable Long id) {
-        return applicantGroupRepository.findById(id).get();
+        return applicantGroupRepository.findById(id).orElse(null);
     }
 
     @PostMapping("/groups")
@@ -59,6 +58,7 @@ public class ApplicantGroupController {
             if (applicantGroupToUpdateWith.getGroupSize() != null) foundApplicantGroup.setGroupSize(applicantGroupToUpdateWith.getGroupSize());
             if (applicantGroupToUpdateWith.getAvailableSpots() != null) foundApplicantGroup.setAvailableSpots(applicantGroupToUpdateWith.getAvailableSpots());
             if (applicantGroupToUpdateWith.getPrice() != null) foundApplicantGroup.setPrice(applicantGroupToUpdateWith.getPrice());
+            if (applicantGroupToUpdateWith.getStartDate() != null) foundApplicantGroup.setStartDate(applicantGroupToUpdateWith.getStartDate());
 
             applicantGroupRepository.save(foundApplicantGroup);
             return "Applicant group was updated";

@@ -43,7 +43,7 @@ public class Applicant {
     private String description;
 
     @Column
-    private String priority;
+    private int priority;
 
     @Column
     private boolean contactCall;
@@ -53,6 +53,9 @@ public class Applicant {
 
     @Column
     private int userType;
+
+    @Column
+    private boolean payedStatus;
 
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();

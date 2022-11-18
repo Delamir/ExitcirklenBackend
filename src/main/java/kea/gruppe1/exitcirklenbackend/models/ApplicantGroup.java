@@ -41,8 +41,4 @@ public class ApplicantGroup {
     @Column
     private LocalDateTime startDate;
 
-    public String getStartDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return startDate.format(formatter);
-    }
 }
