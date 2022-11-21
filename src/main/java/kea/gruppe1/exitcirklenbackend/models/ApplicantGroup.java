@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,5 +45,11 @@ public class ApplicantGroup {
     @Column
     private String tags;
 
+
+    @Column
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "group")
+    private List<Applicant> inviteList;
 
 }

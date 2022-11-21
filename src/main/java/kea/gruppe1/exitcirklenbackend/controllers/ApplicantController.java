@@ -1,5 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
+import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class ApplicantController {
     ApplicantRepository applicantRepository;
 
     private final String VISITERET_STATUS = "visiteret";
+
+    @Autowired
+    EmailService emailService;
 
     /**
      * Gets all applicants in the database
@@ -114,4 +118,6 @@ public class ApplicantController {
             return HttpStatus.BAD_REQUEST;
         }
     }
+
+
 }

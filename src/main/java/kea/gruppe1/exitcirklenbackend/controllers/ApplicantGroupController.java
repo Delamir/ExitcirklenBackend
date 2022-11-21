@@ -70,4 +70,11 @@ public class ApplicantGroupController {
         applicantGroupRepository.deleteById(id);
     }
 
+    @GetMapping("/groups/{id}/send-invites")
+    public void sendInvites(@PathVariable Long id){
+        ApplicantGroup group = applicantGroupRepository.getReferenceById(id);
+
+
+    }
+
 }

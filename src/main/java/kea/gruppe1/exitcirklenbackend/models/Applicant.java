@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 @Table(name = "applicants")
-@Entity
+@Entity(name = "Applicant")
 public class Applicant {
 
     @Id
@@ -59,4 +59,7 @@ public class Applicant {
 
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ApplicantGroup group;
 }
