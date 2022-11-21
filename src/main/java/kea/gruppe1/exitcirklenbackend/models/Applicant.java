@@ -36,8 +36,8 @@ public class Applicant {
     @Column
     private String city;
 
-    @Column
-    private String status;
+    @ManyToOne
+    private ApplicantStatus status;
     
     @Column
     private String description;

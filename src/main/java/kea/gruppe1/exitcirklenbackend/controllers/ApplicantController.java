@@ -68,7 +68,7 @@ public class ApplicantController {
 
     @PostMapping("/applicants")
     public Applicant createApplicant(@RequestBody Applicant newApplicant){
-        newApplicant.setStatus("IKKE VISITERET");
+        //newApplicant.setStatus("IKKE VISITERET");
         return applicantRepository.save(newApplicant);
     }
 
