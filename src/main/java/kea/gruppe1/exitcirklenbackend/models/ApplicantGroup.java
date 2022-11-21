@@ -3,10 +3,7 @@ package kea.gruppe1.exitcirklenbackend.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -40,5 +37,12 @@ public class ApplicantGroup {
 
     @Column
     private LocalDateTime startDate;
+
+    @Column
+    private boolean discount;
+
+    @Column
+    private String tags;
+
 
 }
