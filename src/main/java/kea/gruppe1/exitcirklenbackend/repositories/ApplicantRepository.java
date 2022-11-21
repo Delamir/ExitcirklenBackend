@@ -20,4 +20,12 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
      * @return a list of all applicants with the specified city
      */
     List<Applicant> findApplicantByCity(String city);
+
+    /**
+     * Finds all applicants by their paid status and their status
+     * @param payedStatus is the paid status either true or false
+     * @param Status
+     * @return
+     */
+    List<Applicant> findApplicantByPayedStatusAndStatus(boolean payedStatus, String Status);
 }

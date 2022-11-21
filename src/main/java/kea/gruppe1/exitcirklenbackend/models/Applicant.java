@@ -55,7 +55,7 @@ public class Applicant {
     private int userType;
 
     @Column
-    private boolean payedStatus;
+    private boolean paidStatus;
 
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
