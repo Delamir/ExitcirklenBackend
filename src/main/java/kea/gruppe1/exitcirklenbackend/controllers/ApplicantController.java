@@ -2,19 +2,21 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
+import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 @RestController
 public class ApplicantController {
 
     @Autowired
     ApplicantRepository applicantRepository;
-
-    private final String VISITERET_STATUS = "visiteret";
 
     @Autowired
     EmailService emailService;
@@ -29,6 +31,7 @@ public class ApplicantController {
 
     /**
      * Get a single applicant from id
+     *
      * @param id The id from the applicant
      * @return Applicant with provided id or return null
      */
@@ -39,27 +42,29 @@ public class ApplicantController {
 
     /**
      * Gets all applicants from a specific status
+     *
      * @param status is the wanted status
      * @return A list of all applicants with the status in the parameter
-
+     */
     @GetMapping("/applicants/status/{status}")
-    public List<Applicant> getApplicantsByStatus(@PathVariable String status) {
+    public List<Applicant> getApplicantsByStatus(@PathVariable ApplicantStatus status) {
         return applicantRepository.findApplicantByStatus(status);
     }
-    */
+
 
     /**
      * Gets all applicants with the specified paid status and status
+     *
      * @return a list of all applicants with the provided paid status and status
-
+     */
     @GetMapping("/applicants/waiting-list")
     public List<Applicant> getApplicantsByPaidStatusAndStatus() {
-       return applicantRepository.findApplicantByPaidStatusAndStatus(true, VISITERET_STATUS);
+        return applicantRepository.findApplicantByPaidStatusAndStatus(true, ApplicantStatus.VISITERET);
     }
-    */
 
     /**
      * Gets all applicants from a specified city
+     *
      * @param city is the wanted city
      * @return A list of all applicants with the specified city
      */
@@ -68,15 +73,24 @@ public class ApplicantController {
         return applicantRepository.findApplicantByCity(city);
     }
 
+    /**
+     * @return a list of all status from the ApplicantStatus enum class
+     */
+    @GetMapping("/applicants/status")
+    public List<ApplicantStatus> getApplicantsStatus() {
+        return new ArrayList<>(Arrays.asList(ApplicantStatus.values()));
+    }
+
     @PostMapping("/applicants")
-    public Applicant createApplicant(@RequestBody Applicant newApplicant){
-        //newApplicant.setStatus("IKKE VISITERET");
+    public Applicant createApplicant(@RequestBody Applicant newApplicant) {
+        newApplicant.setStatus(ApplicantStatus.IKKE_VISITERET);
         return applicantRepository.save(newApplicant);
     }
 
     /**
      * Updates only the changed values on the requested applicant
-     * @param id the specific applicants id
+     *
+     * @param id                the specific applicants id
      * @param applicantToUpdate the applicant object which needs to be updated
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */
@@ -107,6 +121,7 @@ public class ApplicantController {
 
     /**
      * Delete a specific applicant
+     *
      * @param id the applicant id
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */

@@ -36,7 +36,7 @@ public class Applicant {
     @Column
     private String city;
 
-    @ManyToOne
+    @Enumerated(EnumType.ORDINAL)
     private ApplicantStatus status;
     
     @Column
