@@ -41,20 +41,22 @@ public class ApplicantController {
      * Gets all applicants from a specific status
      * @param status is the wanted status
      * @return A list of all applicants with the status in the parameter
-     */
+
     @GetMapping("/applicants/status/{status}")
     public List<Applicant> getApplicantsByStatus(@PathVariable String status) {
         return applicantRepository.findApplicantByStatus(status);
     }
+    */
 
     /**
      * Gets all applicants with the specified paid status and status
      * @return a list of all applicants with the provided paid status and status
-     */
+
     @GetMapping("/applicants/waiting-list")
     public List<Applicant> getApplicantsByPaidStatusAndStatus() {
-        return applicantRepository.findApplicantByPaidStatusAndStatus(true, VISITERET_STATUS);
+       return applicantRepository.findApplicantByPaidStatusAndStatus(true, VISITERET_STATUS);
     }
+    */
 
     /**
      * Gets all applicants from a specified city

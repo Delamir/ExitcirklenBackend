@@ -1,6 +1,7 @@
 package kea.gruppe1.exitcirklenbackend.repositories;
 
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
+import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
      * @param status the wanted status to search for
      * @return a list of all applicants with the specified status
      */
-    List<Applicant> findApplicantByStatus(String status);
+    List<Applicant> findApplicantByStatus(ApplicantStatus status);
 
     /**
      * Finds all applicants by a specific city
@@ -27,5 +28,5 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
      * @param Status the status of an applicant
      * @return a list of applicants with specified paid status and status
      */
-    List<Applicant> findApplicantByPaidStatusAndStatus(boolean paidStatus, String Status);
+    List<Applicant> findApplicantByPaidStatusAndStatus(boolean paidStatus, ApplicantStatus status);
 }
