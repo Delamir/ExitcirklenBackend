@@ -13,6 +13,8 @@ public class ApplicantController {
     @Autowired
     ApplicantRepository applicantRepository;
 
+    private final String VISITERET_STATUS = "visiteret";
+
     /**
      * Gets all applicants in the database
      */
@@ -39,6 +41,15 @@ public class ApplicantController {
     @GetMapping("/applicants/status/{status}")
     public List<Applicant> getApplicantsByStatus(@PathVariable String status) {
         return applicantRepository.findApplicantByStatus(status);
+    }
+
+    /**
+     * Gets all applicants with the specified paid status and status
+     * @return a list of all applicants with the provided paid status and status
+     */
+    @GetMapping("/applicants/waiting-list")
+    public List<Applicant> getApplicantsByPaidStatusAndStatus() {
+        return applicantRepository.findApplicantByPaidStatusAndStatus(true, VISITERET_STATUS);
     }
 
     /**
