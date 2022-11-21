@@ -58,6 +58,9 @@ public class Applicant {
     private boolean paidStatus;
 
     @Column
+    private boolean answeredSurvey = false;
+
+    @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)

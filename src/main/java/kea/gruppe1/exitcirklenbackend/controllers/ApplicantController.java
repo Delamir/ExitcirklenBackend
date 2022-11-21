@@ -2,8 +2,10 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
+import kea.gruppe1.exitcirklenbackend.models.SurveyResult;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ public class ApplicantController {
 
     @Autowired
     ApplicantRepository applicantRepository;
+    @Autowired
+    SurveyResultRepository surveyResultRepository;
 
     @Autowired
     EmailService emailService;
@@ -131,6 +135,19 @@ public class ApplicantController {
             applicantRepository.deleteById(id);
             return HttpStatus.OK;
         } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @PostMapping("applicants/{id}/survey")
+    public HttpStatus completeSurvey(@PathVariable Long id, @RequestBody SurveyResult surveyResult) {
+        try {
+            Applicant applicant = applicantRepository.findById(id).get();
+            applicant.setAnsweredSurvey(true);
+            surveyResultRepository.save(surveyResult);
+            return HttpStatus.OK;
+        }catch (Exception e){
             e.printStackTrace();
             return HttpStatus.BAD_REQUEST;
         }

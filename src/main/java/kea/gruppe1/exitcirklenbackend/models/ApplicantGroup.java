@@ -52,4 +52,6 @@ public class ApplicantGroup {
             mappedBy = "group")
     private List<Applicant> inviteList;
 
+
+
 }

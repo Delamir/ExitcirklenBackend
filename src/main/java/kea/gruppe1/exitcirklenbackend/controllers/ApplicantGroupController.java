@@ -1,5 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
+import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ public class ApplicantGroupController {
 
     @Autowired
     ApplicantGroupRepository applicantGroupRepository;
+    @Autowired
+    EmailService emailService;
 
     /**
      * Gets all groups in the database
@@ -73,6 +76,7 @@ public class ApplicantGroupController {
     @GetMapping("/groups/{id}/send-invites")
     public void sendInvites(@PathVariable Long id){
         ApplicantGroup group = applicantGroupRepository.getReferenceById(id);
+        emailService.sendInvitations(group, group.getInviteList());
 
 
     }
