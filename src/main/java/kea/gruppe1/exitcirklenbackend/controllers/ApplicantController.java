@@ -118,14 +118,14 @@ public class ApplicantController {
             if (applicantToUpdate.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
             if (applicantToUpdate.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
             if (applicantToUpdate.getStatus() != null && !applicantToUpdate.getStatus().equals(applicant.getStatus())) {
-                applicantToUpdate.setStatus(applicantToUpdate.getStatus());
-                applicantToUpdate.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+                applicant.setStatus(applicantToUpdate.getStatus());
+                applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
             if (applicantToUpdate.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
-            applicantToUpdate.setContactCall(applicantToUpdate.isContactCall());
-            applicantToUpdate.setContactText(applicantToUpdate.isContactText());
+            applicant.setContactCall(applicantToUpdate.isContactCall());
+            applicant.setContactText(applicantToUpdate.isContactText());
 
             applicantRepository.save(applicant);
             return HttpStatus.OK;
