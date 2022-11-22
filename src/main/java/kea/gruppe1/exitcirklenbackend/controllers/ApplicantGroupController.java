@@ -1,8 +1,11 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
+import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
+import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,8 @@ public class ApplicantGroupController {
 
     @Autowired
     ApplicantGroupRepository applicantGroupRepository;
+    @Autowired
+    ApplicantRepository applicantRepository;
     @Autowired
     EmailService emailService;
 
@@ -73,10 +78,20 @@ public class ApplicantGroupController {
         applicantGroupRepository.deleteById(id);
     }
 
-    @GetMapping("/groups/{id}/send-invites")
-    public void sendInvites(@PathVariable Long id){
+    @PostMapping("/groups/{id}/send-invites")
+    public void sendInvites(@PathVariable Long id, @RequestBody List<Long> ids){
         ApplicantGroup group = applicantGroupRepository.getReferenceById(id);
+        for(Long appId : ids){
+            Applicant applicant = applicantRepository.getReferenceById(appId);
+            group.addToInviteList(applicant);
+            applicant.setStatus(ApplicantStatus.INVITERET);
+            applicantRepository.save(applicant);
+
+        }
         emailService.sendInvitations(group, group.getInviteList());
+        applicantGroupRepository.save(group);
+
+
 
 
     }

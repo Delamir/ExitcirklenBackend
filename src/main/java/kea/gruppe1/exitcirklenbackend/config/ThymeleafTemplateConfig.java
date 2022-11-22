@@ -13,11 +13,6 @@ import java.nio.charset.StandardCharsets;
 public class ThymeleafTemplateConfig {
 
     @Bean
-    public String baseUrl(){
-        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-    }
-
-    @Bean
     public SpringTemplateEngine springTemplateEngine() {
         SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
         springTemplateEngine.addTemplateResolver(emailTemplateResolver());

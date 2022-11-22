@@ -2,10 +2,12 @@ package kea.gruppe1.exitcirklenbackend.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,10 +49,14 @@ public class ApplicantGroup {
 
 
     @Column
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            mappedBy = "group")
-    private List<Applicant> inviteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Applicant> inviteList = new ArrayList<>();
+
+    public void addToInviteList(Applicant applicant){
+        inviteList.add(applicant);
+        applicant.setGroup(this);
+
+    }
 
 
 

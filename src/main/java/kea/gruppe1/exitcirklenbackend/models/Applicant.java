@@ -1,5 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,6 +64,7 @@ public class Applicant {
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicantGroup group;
 }
