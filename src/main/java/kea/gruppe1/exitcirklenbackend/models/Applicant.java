@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
@@ -62,7 +63,7 @@ public class Applicant {
     private boolean answeredSurvey = false;
 
     @Column
-    private LocalDateTime lastChanged = LocalDateTime.now();
+    private LocalDateTime lastChanged = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

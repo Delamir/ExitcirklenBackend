@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,10 +116,10 @@ public class ApplicantController {
             if (applicant.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
             if (applicant.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
             if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
-            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged());
+            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
             if (applicant.getStatus() != null) {
                 applicant.setStatus(applicantToUpdate.getStatus());
-                applicant.setLastChanged(LocalDateTime.now());
+                applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
                 System.out.println(LocalDateTime.now());
             }
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
