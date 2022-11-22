@@ -33,6 +33,7 @@ class EmailServiceTest {
         ApplicantGroup group = new ApplicantGroup();
         group.setAddress("gade 1, 1000 by, land");
         group.setStartDate(LocalDateTime.now());
+        group.setPrice("250");
         ArrayList<Applicant> applicants = new ArrayList<>();
         applicants.add(applicant);
         Assertions.assertDoesNotThrow(() -> emailSenderService.sendInvitations(group, applicants ));

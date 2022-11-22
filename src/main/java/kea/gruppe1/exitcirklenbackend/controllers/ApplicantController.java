@@ -88,7 +88,12 @@ public class ApplicantController {
 
     @PostMapping("/applicants")
     public Applicant createApplicant(@RequestBody Applicant newApplicant) {
-        newApplicant.setStatus(ApplicantStatus.IKKE_VISITERET);
+        if (newApplicant.getUserType() == 1) {
+            newApplicant.setStatus(ApplicantStatus.IKKE_VISITERET);
+        }else {
+            newApplicant.setStatus(null);
+            newApplicant.setLastChanged(null);
+        }
         return applicantRepository.save(newApplicant);
     }
 
@@ -110,16 +115,17 @@ public class ApplicantController {
             if (applicant.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
             if (applicant.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
             if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
+            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged());
             if (applicant.getStatus() != null) {
                 applicant.setStatus(applicantToUpdate.getStatus());
                 applicant.setLastChanged(LocalDateTime.now());
+                System.out.println(LocalDateTime.now());
             }
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
             if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
             applicant.setContactCall(applicantToUpdate.isContactCall());
             applicant.setContactText(applicantToUpdate.isContactText());
-            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged());
 
             applicantRepository.save(applicant);
             return HttpStatus.OK;
