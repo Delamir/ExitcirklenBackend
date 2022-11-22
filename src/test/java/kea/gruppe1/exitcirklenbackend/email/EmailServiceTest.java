@@ -33,9 +33,18 @@ class EmailServiceTest {
         ApplicantGroup group = new ApplicantGroup();
         group.setAddress("gade 1, 1000 by, land");
         group.setStartDate(LocalDateTime.now());
-        group.setPrice("250");
+        group.setPrice(250);
         ArrayList<Applicant> applicants = new ArrayList<>();
         applicants.add(applicant);
         Assertions.assertDoesNotThrow(() -> emailSenderService.sendInvitations(group, applicants ));
+    }
+
+    @Test
+    void sendWelcomeEmail() {
+        Applicant applicant = new Applicant();
+        applicant.setName("test");
+        applicant.setEmail("td_christian@hotmail.com");
+        Assertions.assertDoesNotThrow(() -> emailSenderService.sendWelcomeEmail(applicant ));
+
     }
 }

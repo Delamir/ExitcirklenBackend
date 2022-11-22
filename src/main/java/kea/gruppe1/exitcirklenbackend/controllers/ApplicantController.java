@@ -95,6 +95,7 @@ public class ApplicantController {
             newApplicant.setStatus(null);
             newApplicant.setLastChanged(null);
         }
+        emailService.sendWelcomeEmail(newApplicant);
         return applicantRepository.save(newApplicant);
     }
 
@@ -120,6 +121,7 @@ public class ApplicantController {
             if (applicantToUpdate.getStatus() != null && !applicantToUpdate.getStatus().equals(applicant.getStatus())) {
                 applicant.setStatus(applicantToUpdate.getStatus());
                 applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
             }
             if (applicantToUpdate.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());

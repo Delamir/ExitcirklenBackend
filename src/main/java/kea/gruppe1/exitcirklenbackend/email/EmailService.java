@@ -69,14 +69,24 @@ public class EmailService {
             }catch (MessagingException e ){
                 e.printStackTrace();
             }
-
         }
-
-
-
     }
 
+    public void sendWelcomeEmail(Applicant applicant){
+        Email welcomeMail = new Email();
+        welcomeMail.setTo(applicant.getEmail());
+        welcomeMail.setSubject("Vellkommen til Exitcirklen");
+        welcomeMail.setTemplate("welcome-email");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("applicant", applicant);
+        welcomeMail.setProperties(properties);
 
+        try{
+            sendHtmlMessage(welcomeMail);
+        }catch (MessagingException e){
+            e.printStackTrace();
+        }
+    }
 
 
 
