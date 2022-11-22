@@ -110,24 +110,22 @@ public class ApplicantController {
                                        @RequestBody Applicant applicantToUpdate) {
 
         applicantRepository.findById(id).map(applicant -> {
-            if (applicant.getName() != null) applicant.setName(applicantToUpdate.getName());
-            if (applicant.getAge() != null) applicant.setAge(applicantToUpdate.getAge());
-            if (applicant.getGender() != null) applicant.setGender(applicantToUpdate.getGender());
-            if (applicant.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
-            if (applicant.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
-            if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
-            if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
-            if (applicant.getStatus() != null) {
-                applicant.setStatus(applicantToUpdate.getStatus());
-
-                applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-
+            if (applicantToUpdate.getName() != null) applicant.setName(applicantToUpdate.getName());
+            if (applicantToUpdate.getAge() != null) applicant.setAge(applicantToUpdate.getAge());
+            if (applicantToUpdate.getGender() != null) applicant.setGender(applicantToUpdate.getGender());
+            if (applicantToUpdate.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
+            if (applicantToUpdate.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
+            if (applicantToUpdate.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
+            if (applicantToUpdate.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
+            if (applicantToUpdate.getStatus() != null && applicantToUpdate.getStatus().equals(applicant.getStatus())) {
+                applicantToUpdate.setStatus(applicantToUpdate.getStatus());
+                applicantToUpdate.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
-            if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
-            if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
+            if (applicantToUpdate.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
+            if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
-            applicant.setContactCall(applicantToUpdate.isContactCall());
-            applicant.setContactText(applicantToUpdate.isContactText());
+            applicantToUpdate.setContactCall(applicantToUpdate.isContactCall());
+            applicantToUpdate.setContactText(applicantToUpdate.isContactText());
 
             applicantRepository.save(applicant);
             return HttpStatus.OK;
