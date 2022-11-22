@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +110,10 @@ public class ApplicantController {
             if (applicant.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
             if (applicant.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
             if (applicant.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
-            if (applicant.getStatus() != null) applicant.setStatus(applicantToUpdate.getStatus());
+            if (applicant.getStatus() != null) {
+                applicant.setStatus(applicantToUpdate.getStatus());
+                applicant.setLastChanged(LocalDateTime.now());
+            }
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
             if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
