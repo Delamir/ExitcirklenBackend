@@ -117,7 +117,7 @@ public class ApplicantController {
             if (applicantToUpdate.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
             if (applicantToUpdate.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
             if (applicantToUpdate.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
-            if (applicantToUpdate.getStatus() != null && applicantToUpdate.getStatus().equals(applicant.getStatus())) {
+            if (applicantToUpdate.getStatus() != null && !applicantToUpdate.getStatus().equals(applicant.getStatus())) {
                 applicantToUpdate.setStatus(applicantToUpdate.getStatus());
                 applicantToUpdate.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
