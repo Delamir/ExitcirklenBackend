@@ -119,8 +119,9 @@ public class ApplicantController {
             if (applicant.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
             if (applicant.getStatus() != null) {
                 applicant.setStatus(applicantToUpdate.getStatus());
+
                 applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-                System.out.println(LocalDateTime.now());
+
             }
             if (applicant.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
             if (applicant.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
