@@ -47,6 +47,9 @@ public class ApplicantGroup {
     @Column
     private String tags;
 
+    @Column
+    private String description;
+
 
     @Column
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
