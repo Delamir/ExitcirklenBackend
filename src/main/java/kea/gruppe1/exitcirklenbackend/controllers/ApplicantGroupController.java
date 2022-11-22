@@ -7,6 +7,7 @@ import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,18 +60,27 @@ public class ApplicantGroupController {
 
     @PatchMapping("/groups/{id}")
     public String PatchApplicantGroupById(@PathVariable Long id, @RequestBody ApplicantGroup applicantGroupToUpdateWith) {
-        return applicantGroupRepository.findById(id).map(foundApplicantGroup -> {
-            if (applicantGroupToUpdateWith.getCity() != null) foundApplicantGroup.setCity(applicantGroupToUpdateWith.getCity());
-            if (applicantGroupToUpdateWith.getName() != null) foundApplicantGroup.setName(applicantGroupToUpdateWith.getName());
-            if (applicantGroupToUpdateWith.getAddress() != null) foundApplicantGroup.setAddress(applicantGroupToUpdateWith.getAddress());
-            if (applicantGroupToUpdateWith.getGroupSize() != null) foundApplicantGroup.setGroupSize(applicantGroupToUpdateWith.getGroupSize());
-            if (applicantGroupToUpdateWith.getAvailableSpots() != null) foundApplicantGroup.setAvailableSpots(applicantGroupToUpdateWith.getAvailableSpots());
-            if (applicantGroupToUpdateWith.getPrice() != null) foundApplicantGroup.setPrice(applicantGroupToUpdateWith.getPrice());
-            if (applicantGroupToUpdateWith.getStartDate() != null) foundApplicantGroup.setStartDate(applicantGroupToUpdateWith.getStartDate());
+         applicantGroupRepository.findById(id).map(foundApplicantGroup -> {
+            if (applicantGroupToUpdateWith.getCity() != null)
+                foundApplicantGroup.setCity(applicantGroupToUpdateWith.getCity());
+            if (applicantGroupToUpdateWith.getName() != null)
+                foundApplicantGroup.setName(applicantGroupToUpdateWith.getName());
+            if (applicantGroupToUpdateWith.getAddress() != null)
+                foundApplicantGroup.setAddress(applicantGroupToUpdateWith.getAddress());
+            if (applicantGroupToUpdateWith.getStartDate() != null)
+                foundApplicantGroup.setStartDate(applicantGroupToUpdateWith.getStartDate());
+
+            if (applicantGroupToUpdateWith.getGroupSize() != 0)
+                foundApplicantGroup.setGroupSize(applicantGroupToUpdateWith.getGroupSize());
+            if (applicantGroupToUpdateWith.getAvailableSpots() != 0)
+                foundApplicantGroup.setAvailableSpots(applicantGroupToUpdateWith.getAvailableSpots());
+            if (applicantGroupToUpdateWith.getPrice() != 0)
+                foundApplicantGroup.setPrice(applicantGroupToUpdateWith.getPrice());
 
             applicantGroupRepository.save(foundApplicantGroup);
             return "Applicant group was updated";
-        }).orElse("Applicant group was not found");
+        });
+        return "Applicant group was not found";
     }
 
     @DeleteMapping("/groups/{id}")

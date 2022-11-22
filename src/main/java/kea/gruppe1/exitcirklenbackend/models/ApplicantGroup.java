@@ -30,13 +30,13 @@ public class ApplicantGroup {
     private String address;
 
     @Column
-    private String groupSize;
+    private int groupSize;
 
     @Column
-    private String availableSpots;
+    private int availableSpots;
 
     @Column
-    private String price;
+    private int price;
 
     @Column
     private LocalDateTime startDate;
