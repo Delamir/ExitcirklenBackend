@@ -18,6 +18,7 @@ public class ApplicantGroup {
 
     @Id
     @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column
