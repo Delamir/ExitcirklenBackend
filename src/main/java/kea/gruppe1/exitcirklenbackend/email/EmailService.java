@@ -29,6 +29,7 @@ public class EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    private final boolean doSendMessage = false;
 
 
     public void sendSimpleMessage(String to, String subject, String text) {
@@ -39,7 +40,7 @@ public class EmailService {
         emailSender.send(message);
     }
 
-    public void sendHtmlMessage(Email email) throws MessagingException{
+    public void sendHtmlMessage(Email email) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
         Context context = new Context();
@@ -51,43 +52,91 @@ public class EmailService {
         helper.setText(html, true);
 
         log.info("Sending email: {} with html body: {}", email, html);
-        emailSender.send(message);
+        if(doSendMessage)
+            emailSender.send(message);
     }
 
-    public void sendInvitations(ApplicantGroup group, List<Applicant> applicants){
-        for (Applicant applicant: applicants) {
-            Email email = new Email();
-            email.setTo(applicant.getEmail());
+    public Email createEmail(Applicant applicant) {
+        Email email = new Email();
+        email.setTo(applicant.getEmail());
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("applicant", applicant);
+        email.setProperties(properties);
+
+        return email;
+    }
+
+
+    public void sendInvitations(ApplicantGroup group, List<Applicant> applicants) {
+        for (Applicant applicant : applicants) {
+            Email email = createEmail(applicant);
             email.setSubject("Exitcirklen | invitation til gruppeforløb");
             email.setTemplate("invite-email.html");
-            Map<String, Object> properties = new HashMap<>();
-            properties.put("applicant", applicant);
+            Map<String, Object> properties = email.getProperties();
             properties.put("group", group);
             email.setProperties(properties);
             try {
                 sendHtmlMessage(email);
-            }catch (MessagingException e ){
+            } catch (MessagingException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void sendWelcomeEmail(Applicant applicant){
-        Email welcomeMail = new Email();
-        welcomeMail.setTo(applicant.getEmail());
-        welcomeMail.setSubject("Vellkommen til Exitcirklen");
-        welcomeMail.setTemplate("welcome-email");
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("applicant", applicant);
-        welcomeMail.setProperties(properties);
+    public void sendWelcomeEmail(Applicant applicant) {
+        Email email = createEmail(applicant);
+        email.setSubject("Vellkommen til Exitcirklen");
+        email.setTemplate("welcome-email");
 
-        try{
-            sendHtmlMessage(welcomeMail);
-        }catch (MessagingException e){
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
 
+    public void sendVisitationOfferEmail(Applicant applicant) {
+        Email email = createEmail(applicant);
+        email.setSubject("Exitcirklen | Visitations tilbud");
+        email.setTemplate("visitation-offer-email");
+
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendWaitinglistConfirmationEmail(Applicant applicant) {
+        Email email = createEmail(applicant);
+        email.setSubject("Exitcirklen | Venteliste bekræftelse");
+        email.setTemplate("waitinglist-confirmation-email");
+
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendGroupWelcomeEmail(Applicant applicant, ApplicantGroup group) {
+        Email email = createEmail(applicant);
+        email.setSubject("Velkomst");
+        email.setTemplate("group-welcome-email");
+        Map<String, Object> properties = email.getProperties();
+        properties.put("group", group);
+        email.setProperties(properties);
+
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendNewsletter() {
+
+    }
 
 
 }
