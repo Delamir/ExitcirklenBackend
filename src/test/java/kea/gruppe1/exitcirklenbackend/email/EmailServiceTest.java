@@ -47,4 +47,21 @@ class EmailServiceTest {
         Assertions.assertDoesNotThrow(() -> emailSenderService.sendWelcomeEmail(applicant ));
 
     }
+
+    @Test
+    void sendGroupWelcomeEmail() {
+        Applicant applicant = new Applicant();
+        applicant.setName("Sugesen");
+        applicant.setEmail("td_christian@hotmail.com");
+        ApplicantGroup group = new ApplicantGroup();
+        group.setDescription("Hej, jeg er Patrick og kommer til at være din beste ven efter mit mirakel gruppeforløb der kan kurere kræft, hoste, homosexualitet, pest, kolera, covid-19, covid-20, gnavenhed og alt andet. Så du er super heldig og vær klar til at komme ind i nirvana, og husk hvis man subscriber til min patreon så bliver du højere, flottere og alle vil kunne lige dig");
+        group.setStartDate(LocalDateTime.now());
+        group.setAddress("kiosken på nørregade");
+
+
+        Assertions.assertDoesNotThrow(() -> emailSenderService.sendGroupWelcomeEmail(applicant,group ));
+
+
+
+    }
 }

@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-  group welcome
+    <p>Velkommen til dit gruppeforløb hos Exitcirklen</p>
+    <p>
+        Adressen er: <span th:text="${group.address}"></span>
+    </p>
+    <p>
+        Mødetidspunktet er: <span th:text="${#temporals.format(group.startDate, 'dd-MM-yy HH:mm')}"  th:remove="tag"></span>
+    </p>
+    <p th:text="${group.description}"></p>
 </body>
 </html>
