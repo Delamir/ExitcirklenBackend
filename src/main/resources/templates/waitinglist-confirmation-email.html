@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    waitinglist confirmation
+    <p th:inline="text">Kære [[${applicant.name}]]]</p>
+    <p>
+    Du er hermed kommet på vores venteliste, og du kan forvente at blive inviteret til et gruppe forløb
+    indenfor det næster stykke tid
+    </p>
+    <p>Med venlig hilsen Exitcirklen</p>
 </body>
 </html>
