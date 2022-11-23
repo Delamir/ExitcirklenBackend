@@ -135,6 +135,8 @@ public class EmailService {
     }
 
     public void sendNewsletter() {
+        Email email = new Email();
+        email.setSubject("");
 
     }
 
