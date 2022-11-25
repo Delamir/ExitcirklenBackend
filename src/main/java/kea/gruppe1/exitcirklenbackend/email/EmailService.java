@@ -16,6 +16,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,10 +87,12 @@ public class EmailService {
         }
     }
 
-    public void sendVisitationOfferEmail(Applicant applicant) {
+    public void sendVisitationOfferEmail(Applicant applicant, LocalDateTime time) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Visitations tilbud");
         email.setTemplate("visitation-offer-email");
+        Map<String, Object> properties = email.getProperties();
+        properties.put("time", time);
 
         try {
             sendHtmlMessage(email);

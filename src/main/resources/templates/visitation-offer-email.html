@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-  visitation offer
+<p th:inline="text">Kære [[${applicant.name}]]</p>
+<p th:inline="text">Du har fået tid til visitation den [[${#temporals.format(time,"dd/MM")}]] klokken [[${#temporals.format(time,"HH:mm")}]]</p>
+<p> Med venlig hilsen Exitcirklen</p>
+<p></p>
+
+
 </body>
 </html>

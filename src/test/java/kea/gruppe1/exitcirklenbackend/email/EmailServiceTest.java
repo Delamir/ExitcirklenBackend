@@ -58,10 +58,19 @@ class EmailServiceTest {
         group.setStartDate(LocalDateTime.now());
         group.setAddress("kiosken på nørregade");
 
-
         Assertions.assertDoesNotThrow(() -> emailSenderService.sendGroupWelcomeEmail(applicant,group ));
 
+    }
+
+    @Test
+    void sendVisitationOfferEmail() {
+        Applicant applicant = new Applicant();
+        applicant.setName("Sugesen");
+        applicant.setEmail("td_christian@hotmail.com");
+
+        LocalDateTime time = LocalDateTime.now();
 
 
+        Assertions.assertDoesNotThrow(() -> emailSenderService.sendVisitationOfferEmail(applicant, time));
     }
 }

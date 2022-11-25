@@ -91,7 +91,7 @@ public class ApplicantController {
     public Applicant createApplicant(@RequestBody Applicant newApplicant) {
         if (newApplicant.getUserType() == 1) {
             newApplicant.setStatus(ApplicantStatus.IKKE_VISITERET);
-        }else {
+        } else {
             newApplicant.setStatus(null);
             newApplicant.setLastChanged(null);
         }
@@ -115,15 +115,18 @@ public class ApplicantController {
             if (applicantToUpdate.getAge() != null) applicant.setAge(applicantToUpdate.getAge());
             if (applicantToUpdate.getGender() != null) applicant.setGender(applicantToUpdate.getGender());
             if (applicantToUpdate.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
-            if (applicantToUpdate.getPhoneNumber() != null) applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
+            if (applicantToUpdate.getPhoneNumber() != null)
+                applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());
             if (applicantToUpdate.getCity() != null) applicant.setCity(applicantToUpdate.getCity());
-            if (applicantToUpdate.getLastChanged() != null) applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
+            if (applicantToUpdate.getLastChanged() != null)
+                applicant.setLastChanged(applicantToUpdate.getLastChanged().truncatedTo(ChronoUnit.SECONDS));
             if (applicantToUpdate.getStatus() != null && !applicantToUpdate.getStatus().equals(applicant.getStatus())) {
                 applicant.setStatus(applicantToUpdate.getStatus());
                 applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
             }
-            if (applicantToUpdate.getDescription() != null) applicant.setDescription(applicantToUpdate.getDescription());
+            if (applicantToUpdate.getDescription() != null)
+                applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
             applicant.setContactCall(applicantToUpdate.isContactCall());
@@ -159,7 +162,19 @@ public class ApplicantController {
             applicant.setAnsweredSurvey(true);
             surveyResultRepository.save(surveyResult);
             return HttpStatus.OK;
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @PostMapping("applicants/visitation-request")
+    public HttpStatus visitationRequest(@RequestBody Applicant applicant, LocalDateTime time) {
+        try {
+            emailService.sendVisitationOfferEmail(applicant, time);
+            applicant.setStatus(ApplicantStatus.PROCESS);
+            return HttpStatus.OK;
+        } catch (Exception e) {
             e.printStackTrace();
             return HttpStatus.BAD_REQUEST;
         }
