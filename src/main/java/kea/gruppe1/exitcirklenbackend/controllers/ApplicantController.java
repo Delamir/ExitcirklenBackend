@@ -1,5 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
+import kea.gruppe1.exitcirklenbackend.DTO.ApplicantDTO;
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.SurveyResult;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -169,10 +171,12 @@ public class ApplicantController {
     }
 
     @PostMapping("applicants/visitation-request")
-    public HttpStatus visitationRequest(@RequestBody Applicant applicant, LocalDateTime time) {
+    public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
-            emailService.sendVisitationOfferEmail(applicant, time);
-            applicant.setStatus(ApplicantStatus.PROCESS);
+            System.out.println(applicantDTO);
+            emailService.sendVisitationOfferEmail(applicantDTO.applicant, applicantDTO.time);
+            applicantDTO.applicant.setStatus(ApplicantStatus.PROCESS);
+            applicantDTO.applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             return HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();
