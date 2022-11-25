@@ -101,6 +101,21 @@ public class EmailService {
         }
     }
 
+    public void sendCancelVisitationEmail(Applicant applicant, String reason) {
+        Email email = createEmail(applicant);
+        email.setSubject("Exitcirklen | Aflysning af visistering");
+        email.setTemplate("cancel-visitation-email");
+
+        Map<String, Object> properties = email.getProperties();
+        properties.put("reason", reason);
+
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendWaitinglistConfirmationEmail(Applicant applicant) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Venteliste bekræftelse");

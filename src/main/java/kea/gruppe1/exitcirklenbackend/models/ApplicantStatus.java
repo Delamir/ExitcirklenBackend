@@ -4,6 +4,6 @@ public enum ApplicantStatus {
 
     VISITERET,
     IKKE_VISITERET,
-    PROCESS,
+    I_PROCESS,
     INVITERET
 }

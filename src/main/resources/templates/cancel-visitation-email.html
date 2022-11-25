@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:inline="text">Kære [[${applicant.name}]]]</p>
+<p th:inline="text">
+    Din visitation er desværre blevet aflyst pga. [[${reason}]]
+</p>
+<p>Med venlig hilsen Exitcirklen</p>
+</body>
+</html>

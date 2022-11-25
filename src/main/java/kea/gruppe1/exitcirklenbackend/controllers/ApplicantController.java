@@ -173,10 +173,24 @@ public class ApplicantController {
     @PostMapping("applicants/visitation-request")
     public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
-            System.out.println(applicantDTO);
             emailService.sendVisitationOfferEmail(applicantDTO.applicant, applicantDTO.time);
-            applicantDTO.applicant.setStatus(ApplicantStatus.PROCESS);
+            applicantDTO.applicant.setStatus(ApplicantStatus.I_PROCESS);
             applicantDTO.applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            applicantRepository.save(applicantDTO.applicant);
+            return HttpStatus.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @PostMapping("/applicants/cancel-visitation")
+    public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO) {
+        try {
+            emailService.sendCancelVisitationEmail(applicantDTO.applicant, applicantDTO.reason);
+            applicantDTO.applicant.setStatus(ApplicantStatus.IKKE_VISITERET);
+            applicantDTO.applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            applicantRepository.save(applicantDTO.applicant);
             return HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,4 +8,5 @@ import java.time.LocalDateTime;
 public class ApplicantDTO {
     public Applicant applicant;
     public LocalDateTime time;
+    public String reason;
 }
