@@ -40,6 +40,13 @@ public class ApplicantGroupController {
         return applicantGroupRepository.findById(id).orElse(null);
     }
 
+    @GetMapping("/groups/{id}/availableCount")
+    public int availableCount (@PathVariable Long id) {
+        ApplicantGroup group = applicantGroupRepository.findById(id).get();
+        int applicantCount = group.getInviteList().size();
+        return group.getGroupSize() - applicantCount;
+    }
+
     @PostMapping("/groups")
     public ApplicantGroup addGroup (@RequestBody ApplicantGroup newGroup) {
         return applicantGroupRepository.save(newGroup);
@@ -72,8 +79,6 @@ public class ApplicantGroupController {
 
             if (applicantGroupToUpdateWith.getGroupSize() != 0)
                 foundApplicantGroup.setGroupSize(applicantGroupToUpdateWith.getGroupSize());
-            if (applicantGroupToUpdateWith.getAvailableSpots() != 0)
-                foundApplicantGroup.setAvailableSpots(applicantGroupToUpdateWith.getAvailableSpots());
             if (applicantGroupToUpdateWith.getPrice() != 0)
                 foundApplicantGroup.setPrice(applicantGroupToUpdateWith.getPrice());
 
@@ -100,10 +105,6 @@ public class ApplicantGroupController {
         }
         emailService.sendInvitations(group, group.getInviteList());
         applicantGroupRepository.save(group);
-
-
-
-
     }
 
 }

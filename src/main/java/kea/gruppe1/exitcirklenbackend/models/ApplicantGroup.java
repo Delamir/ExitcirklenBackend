@@ -34,9 +34,6 @@ public class ApplicantGroup {
     private int groupSize;
 
     @Column
-    private int availableSpots;
-
-    @Column
     private int price;
 
     @Column
