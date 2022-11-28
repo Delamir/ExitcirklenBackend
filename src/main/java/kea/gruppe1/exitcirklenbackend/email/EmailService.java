@@ -116,6 +116,18 @@ public class EmailService {
         }
     }
 
+    public void sendConfirmationVisitationEmail(Applicant applicant) {
+        Email email = createEmail(applicant);
+        email.setSubject("Exitcirklen | Aflysning af visistering");
+        email.setTemplate("confirmation-visitation-email");
+
+        try {
+            sendHtmlMessage(email);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendWaitinglistConfirmationEmail(Applicant applicant) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Venteliste bekræftelse");

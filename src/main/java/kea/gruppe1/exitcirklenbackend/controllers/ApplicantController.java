@@ -26,7 +26,6 @@ public class ApplicantController {
     @Autowired
     SurveyResultRepository surveyResultRepository;
 
-    @Autowired
     EmailService emailService;
 
     /**
@@ -173,10 +172,11 @@ public class ApplicantController {
     @PostMapping("applicants/visitation-request")
     public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
-            emailService.sendVisitationOfferEmail(applicantDTO.applicant, applicantDTO.time);
-            applicantDTO.applicant.setStatus(ApplicantStatus.I_PROCESS);
-            applicantDTO.applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            applicantRepository.save(applicantDTO.applicant);
+            System.out.println(emailService);
+            emailService.sendVisitationOfferEmail(applicantDTO.getApplicant(), applicantDTO.getTime());
+            applicantDTO.getApplicant().setStatus(ApplicantStatus.I_PROCESS);
+            applicantDTO.getApplicant().setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            applicantRepository.save(applicantDTO.getApplicant());
             return HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,10 +187,10 @@ public class ApplicantController {
     @PostMapping("/applicants/cancel-visitation")
     public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO) {
         try {
-            emailService.sendCancelVisitationEmail(applicantDTO.applicant, applicantDTO.reason);
-            applicantDTO.applicant.setStatus(ApplicantStatus.IKKE_VISITERET);
-            applicantDTO.applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            applicantRepository.save(applicantDTO.applicant);
+            emailService.sendCancelVisitationEmail(applicantDTO.getApplicant(), applicantDTO.getReason());
+            applicantDTO.getApplicant().setStatus(ApplicantStatus.IKKE_VISITERET);
+            applicantDTO.getApplicant().setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            applicantRepository.save(applicantDTO.getApplicant());
             return HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,5 +198,24 @@ public class ApplicantController {
         }
     }
 
+    @PostMapping("/applicants/confirm-visitation")
+    public HttpStatus confirmVisitation(@RequestBody Applicant applicant) {
+        try {
+            emailService.sendConfirmationVisitationEmail(applicant);
+            applicant.setStatus(ApplicantStatus.VISITERET);
+            applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            applicantRepository.save(applicant);
+            return HttpStatus.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+
+    }
 
 }

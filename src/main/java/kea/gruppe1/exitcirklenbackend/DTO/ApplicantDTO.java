@@ -6,7 +6,32 @@ import java.time.LocalDateTime;
 
 
 public class ApplicantDTO {
-    public Applicant applicant;
-    public LocalDateTime time;
-    public String reason;
+
+    private Applicant applicant;
+    private LocalDateTime time;
+    private String reason;
+
+    public Applicant getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(Applicant applicant) {
+        this.applicant = applicant;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
