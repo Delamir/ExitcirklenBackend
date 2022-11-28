@@ -59,6 +59,11 @@ public class ApplicantGroup {
 
     }
 
+    public void removeFromInviteList(Applicant applicant) {
+        inviteList.remove(applicant);
+        applicant.setGroup(null);
+    }
+
 
 
 }
