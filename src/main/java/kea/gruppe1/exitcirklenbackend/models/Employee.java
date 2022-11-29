@@ -20,6 +20,9 @@ public class Employee {
     private String name;
 
     @Column
+    private int age;
+
+    @Column
     private String email;
 
     @Column
