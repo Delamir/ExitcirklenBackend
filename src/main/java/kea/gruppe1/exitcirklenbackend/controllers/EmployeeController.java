@@ -1,11 +1,14 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.models.Employee;
+import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -14,7 +17,7 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @GetMapping("/employee")
+    @GetMapping("/employees")
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
@@ -24,12 +27,17 @@ public class EmployeeController {
         return employeeRepository.findById(id).orElse(null);
     }
 
-    @PostMapping("/employee")
+    @GetMapping("/employee/responsibility")
+    public List<EmployeeResponsibility> getResponsibilities() {
+        return new ArrayList<>(Arrays.asList(EmployeeResponsibility.values()));
+    }
+
+    @PostMapping("/employees")
     public Employee addEmployee(@RequestBody Employee newEmployee) {
         return employeeRepository.save(newEmployee);
     }
 
-    @PutMapping("/employee/{id}")
+    @PutMapping("/employees/{id}")
     public HttpStatus updateEmployeeById(@PathVariable Long id, @RequestBody Employee employeeToUpdateWith) {
         if (employeeRepository.existsById(id)) {
             if(!employeeToUpdateWith.getId().equals(id)) {
@@ -42,7 +50,7 @@ public class EmployeeController {
         }
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/employees/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable Long id) {
         try {
             employeeRepository.deleteById(id);
