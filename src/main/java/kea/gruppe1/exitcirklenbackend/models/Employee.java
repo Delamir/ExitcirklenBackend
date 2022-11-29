@@ -28,5 +28,8 @@ public class Employee {
     @Enumerated(EnumType.ORDINAL)
     private EmployeeResponsibility responsibility;
 
+    @Column
+    private String password;
+
 
 }
