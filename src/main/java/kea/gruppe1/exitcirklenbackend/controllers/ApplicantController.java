@@ -42,7 +42,7 @@ public class ApplicantController {
      * @param id The id from the applicant
      * @return Applicant with provided id or return null
      */
-    @GetMapping("/applicant/{id}")
+    @GetMapping("/applicants/{id}")
     public Applicant getApplicant(@PathVariable Long id) {
         return applicantRepository.findById(id).orElse(null);
     }

@@ -34,5 +34,11 @@ public class Employee {
     @Column
     private String password;
 
+    public Employee(){
 
+    }
+    public Employee(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

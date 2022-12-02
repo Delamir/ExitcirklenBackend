@@ -8,6 +8,7 @@ public class ExitcirklenBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExitcirklenBackendApplication.class, args);
+
 	}
 
 }
