@@ -1,7 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.security.services;
 
 import kea.gruppe1.exitcirklenbackend.models.Employee;
-import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("finding user with email " + email);
         Employee employee = employeeRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 

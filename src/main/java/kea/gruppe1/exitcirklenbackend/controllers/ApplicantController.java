@@ -9,6 +9,7 @@ import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -32,6 +33,7 @@ public class ApplicantController {
      * Gets all applicants in the database
      */
     @GetMapping("/applicants")
+    @PreAuthorize("hasAuthority('ADMINSTRATOR')")
     public List<Applicant> getApplicants() {
         return applicantRepository.findAll();
     }

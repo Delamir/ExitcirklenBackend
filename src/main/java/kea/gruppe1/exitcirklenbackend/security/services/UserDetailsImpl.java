@@ -1,6 +1,5 @@
 package kea.gruppe1.exitcirklenbackend.security.services;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +44,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(Employee employee) {
-        List<GrantedAuthority> authorities = Stream.of(employee.getResponsibility())
+        List<GrantedAuthority> authorities = Stream.of(employee.getRole())
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
 

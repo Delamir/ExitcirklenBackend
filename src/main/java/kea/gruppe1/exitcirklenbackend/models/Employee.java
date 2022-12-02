@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,7 +15,7 @@ public class Employee {
 
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -28,15 +30,16 @@ public class Employee {
     @Column
     private String phoneNumber;
 
-    @Enumerated(EnumType.ORDINAL)
-    private EmployeeResponsibility responsibility;
+    @Enumerated(EnumType.STRING)
+    private EmployeeResponsibility role;
 
     @Column
     private String password;
 
-    public Employee(){
+    public Employee() {
 
     }
+
     public Employee(String email, String password) {
         this.email = email;
         this.password = password;

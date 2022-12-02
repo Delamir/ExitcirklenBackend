@@ -2,7 +2,6 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.DTO.JwtResponse;
 import kea.gruppe1.exitcirklenbackend.DTO.LoginRequest;
-import kea.gruppe1.exitcirklenbackend.DTO.SignupRequest;
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
@@ -54,6 +53,7 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        System.out.println(authentication);
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
@@ -75,11 +75,7 @@ public class AuthController {
         Employee employee = new Employee("admin@admin.admin",
                 encoder.encode("admin"));
 
-        EmployeeResponsibility responsibility = EmployeeResponsibility.ADMINSTRATOR;
-
-
-
-        employee.setResponsibility(responsibility);
+        employee.setRole(EmployeeResponsibility.ADMINSTRATOR);
         employeeRepository.save(employee);
 
         return ResponseEntity.ok("User registered successfully!");
