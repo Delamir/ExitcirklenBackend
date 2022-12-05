@@ -38,8 +38,14 @@ public class TestController {
     public String adminAccess() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
-        System.out.println(authentication.getPrincipal());
-        System.out.println(authentication.getCredentials());
+
+        if(authentication.getAuthorities().toArray()[0].equals("ADMINSTRATOR"))
+        {
+            System.out.println("it worked");
+        }else {
+            System.out.println("it did not work");
+        }
+
 
         return "Admin Board.";
     }

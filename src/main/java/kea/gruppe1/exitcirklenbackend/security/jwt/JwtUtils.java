@@ -1,12 +1,15 @@
 package kea.gruppe1.exitcirklenbackend.security.jwt;
 
+import java.sql.SQLOutput;
 import java.util.Date;
+import java.util.Map;
 
 import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
@@ -21,6 +24,10 @@ public class JwtUtils {
     @Value("${exitcirklen.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    @Value("${exitcirklen.app.jwtRefreshExpirationMs}")
+    private int refreshExpirationDateInMs;
+
+
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -32,9 +39,23 @@ public class JwtUtils {
                 .compact();
     }
 
+    public String generateTokenFromEmail(String email) {
+        return Jwts.builder().setSubject(email).setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
     public String getEmailFromJwtToken(String token) {
         System.out.println(Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject());
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
+
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+
     }
 
     public boolean validateJwtToken(String authToken) {
@@ -46,6 +67,7 @@ public class JwtUtils {
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
+            System.out.println("HERERERE");
             logger.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());

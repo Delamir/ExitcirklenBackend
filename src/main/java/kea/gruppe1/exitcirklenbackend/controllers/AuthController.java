@@ -1,12 +1,18 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
+import io.jsonwebtoken.impl.DefaultClaims;
 import kea.gruppe1.exitcirklenbackend.DTO.JwtResponse;
 import kea.gruppe1.exitcirklenbackend.DTO.LoginRequest;
+import kea.gruppe1.exitcirklenbackend.DTO.TokenRefreshRequest;
+import kea.gruppe1.exitcirklenbackend.DTO.TokenRefreshResponse;
+import kea.gruppe1.exitcirklenbackend.exceptions.TokenRefreshException;
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
+import kea.gruppe1.exitcirklenbackend.models.RefreshToken;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
 import kea.gruppe1.exitcirklenbackend.security.jwt.JwtUtils;
 import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
+import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,13 +21,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,8 +42,11 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    RefreshTokenService refreshTokenService;
+
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -54,7 +60,10 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         System.out.println(authentication);
-        return ResponseEntity.ok(new JwtResponse(jwt,
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(),
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
@@ -62,6 +71,33 @@ public class AuthController {
                 roles));
     }
 
+
+    @PostMapping("/auth/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getEmployee)
+                .map(employee -> {
+                    String token = jwtUtils.generateTokenFromEmail(employee.getEmail());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
+    }
+
+    public Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
+        return new HashMap<String, Object>(claims);
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<?> logoutUser() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = userDetails.getId();
+        refreshTokenService.deleteByUserId(userId);
+        return ResponseEntity.ok("Log out successful!");
+    }
 
     @PostMapping("/auth/adminsignup")
     public ResponseEntity<?> registerUser() {
@@ -80,7 +116,6 @@ public class AuthController {
 
         return ResponseEntity.ok("User registered successfully!");
     }
-
 
 
 }

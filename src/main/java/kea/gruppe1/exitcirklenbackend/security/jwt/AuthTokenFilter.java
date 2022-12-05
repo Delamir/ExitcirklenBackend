@@ -1,4 +1,5 @@
 package kea.gruppe1.exitcirklenbackend.security.jwt;
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -6,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +47,26 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void allowForRefreshToken(ExpiredJwtException e, HttpServletRequest request) {
+
+        // create a UsernamePasswordAuthenticationToken with null values.
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                null, null, null);
+        // After setting the Authentication in the context, we specify
+        // that the current user is authenticated. So it passes the
+        // Spring Security Configurations successfully.
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        // Set the claims so that in controller we will be using it to create
+        // new JWT
+        request.setAttribute("claims", e.getClaims());
+
     }
 
     private String parseJwt(HttpServletRequest request) {
