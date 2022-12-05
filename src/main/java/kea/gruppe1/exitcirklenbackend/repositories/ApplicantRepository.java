@@ -4,6 +4,7 @@ import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
@@ -14,6 +15,8 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
      * @return a list of all applicants with the specified status
      */
     List<Applicant> findApplicantByStatus(ApplicantStatus status);
+
+    List<Applicant> findApplicantByStatusIn(Collection<ApplicantStatus> statuses);
 
     /**
      * Finds all applicants by a specific city

@@ -3,6 +3,7 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 import kea.gruppe1.exitcirklenbackend.DTO.ApplicantDTO;
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
+import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.models.SurveyResult;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
@@ -10,6 +11,8 @@ import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -33,8 +36,16 @@ public class ApplicantController {
      * Gets all applicants in the database
      */
     @GetMapping("/applicants")
-    @PreAuthorize("hasAuthority('ADMINSTRATOR')")
+    @PreAuthorize("isAuthenticated()")
     public List<Applicant> getApplicants() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getAuthorities().toArray()[0].equals(EmployeeResponsibility.VISITATOR.name()))
+        {
+            return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
+        }
+        if(authentication.getAuthorities().toArray()[0].equals(EmployeeResponsibility.GRUPPEANSVARLIGE.name())) {
+            return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.VISITERET));
+        }
         return applicantRepository.findAll();
     }
 

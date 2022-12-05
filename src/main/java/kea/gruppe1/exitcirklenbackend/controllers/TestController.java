@@ -36,14 +36,13 @@ public class TestController {
     @GetMapping("/test/admin")
     @PreAuthorize("hasAuthority('ADMINSTRATOR')")
     public String adminAccess() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getAuthorities().toArray()[0].equals("ADMINSTRATOR"))
         {
-            System.out.println("it worked");
+            System.out.println("is admin");
         }else {
-            System.out.println("it did not work");
+            System.out.println("it not admin");
         }
 
 
