@@ -169,7 +169,7 @@ public class ApplicantController {
         }
     }
 
-    @PostMapping("applicants/{id}/survey")
+    @PostMapping("/applicants/{id}/survey")
     public HttpStatus completeSurvey(@PathVariable Long id, @RequestBody SurveyResult surveyResult) {
         try {
             Applicant applicant = applicantRepository.findById(id).get();
@@ -182,7 +182,7 @@ public class ApplicantController {
         }
     }
 
-    @PostMapping("applicants/visitation-request")
+    @PostMapping("/applicants/visitation-request")
     public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
             System.out.println(emailService);
