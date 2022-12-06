@@ -8,6 +8,7 @@ import kea.gruppe1.exitcirklenbackend.models.SurveyResult;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
+import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,13 +40,19 @@ public class ApplicantController {
     @PreAuthorize("isAuthenticated()")
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getAuthorities().toArray()[0].equals(EmployeeResponsibility.VISITATOR.name()))
-        {
-            return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
+        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
+        System.out.println(principal.getCity());
+        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
+            System.out.println("VISITATOR");
+            List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
+            System.out.println(applicants);
+            return applicants;
         }
-        if(authentication.getAuthorities().toArray()[0].equals(EmployeeResponsibility.GRUPPEANSVARLIGE.name())) {
+        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.GRUPPEANSVARLIGE.name())) {
+            System.out.println("GROUP");
             return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.VISITERET));
         }
+        System.out.println("ADMIN");
         return applicantRepository.findAll();
     }
 

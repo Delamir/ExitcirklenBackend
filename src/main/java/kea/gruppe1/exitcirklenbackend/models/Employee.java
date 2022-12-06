@@ -31,6 +31,9 @@ public class Employee {
     private String email;
 
     @Column
+    private String city;
+
+    @Column
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)

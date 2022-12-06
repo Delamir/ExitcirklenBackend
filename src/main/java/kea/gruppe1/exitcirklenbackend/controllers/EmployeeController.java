@@ -16,10 +16,10 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    PasswordEncoder encoder;
+    EmployeeRepository employeeRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    PasswordEncoder encoder;
 
     @GetMapping("/employees")
     public List<Employee> getEmployees() {
