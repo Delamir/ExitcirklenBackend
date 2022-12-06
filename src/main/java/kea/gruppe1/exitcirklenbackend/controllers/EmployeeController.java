@@ -5,6 +5,7 @@ import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @RestController
 public class EmployeeController {
+
+    @Autowired
+    PasswordEncoder encoder;
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -34,6 +38,7 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     public Employee addEmployee(@RequestBody Employee newEmployee) {
+        newEmployee.setPassword(encoder.encode(newEmployee.getPassword()));
         return employeeRepository.save(newEmployee);
     }
 
@@ -43,6 +48,7 @@ public class EmployeeController {
             if(!employeeToUpdateWith.getId().equals(id)) {
                 employeeRepository.deleteById(id);
             }
+            employeeToUpdateWith.setPassword(encoder.encode(employeeToUpdateWith.getPassword()));
             employeeRepository.save(employeeToUpdateWith);
             return HttpStatus.OK;
         } else {
