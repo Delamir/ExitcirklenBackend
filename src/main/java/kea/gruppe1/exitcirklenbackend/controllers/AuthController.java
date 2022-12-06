@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,7 +110,7 @@ public class AuthController {
         Employee employee = new Employee("admin@admin.admin",
                 encoder.encode("admin"));
 
-        employee.setRole(EmployeeResponsibility.ADMINSTRATOR);
+        employee.setRole(EmployeeResponsibility.ADMINISTRATOR);
         employeeRepository.save(employee);
 
         return ResponseEntity.ok("User registered successfully!");

@@ -3,7 +3,7 @@ package kea.gruppe1.exitcirklenbackend.models;
 public enum EmployeeResponsibility {
 
     VISITATOR,
-    ADMINSTRATOR,
+    ADMINISTRATOR,
     GRUPPEANSVARLIGE,
     MEDARBEJDER
 }
