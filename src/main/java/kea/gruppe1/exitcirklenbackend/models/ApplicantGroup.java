@@ -1,6 +1,9 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +17,7 @@ import java.util.List;
 @Setter
 @Table(name = "applicant_groups")
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ApplicantGroup {
 
     @Id
@@ -50,7 +54,6 @@ public class ApplicantGroup {
 
 
     @Column
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<Applicant> inviteList = new ArrayList<>();
 

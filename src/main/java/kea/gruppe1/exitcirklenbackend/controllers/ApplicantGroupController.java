@@ -27,6 +27,8 @@ public class ApplicantGroupController {
      */
     @GetMapping("/groups")
     public List<ApplicantGroup> getGroups() {
+
+
         return applicantGroupRepository.findAll();
     }
 

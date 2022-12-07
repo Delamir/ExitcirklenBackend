@@ -41,18 +41,16 @@ public class ApplicantController {
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        System.out.println(principal.getCity());
+
         if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
-            System.out.println("VISITATOR");
             List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
-            System.out.println(applicants);
             return applicants;
         }
+
         if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.GRUPPEANSVARLIG.name())) {
-            System.out.println("GROUP");
             return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.VISITERET));
         }
-        System.out.println("ADMIN");
+
         return applicantRepository.findAll();
     }
 

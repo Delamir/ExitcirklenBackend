@@ -1,6 +1,8 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @Table(name = "applicants")
 @Entity(name = "Applicant")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Applicant {
 
     @Id
@@ -65,6 +68,6 @@ public class Applicant {
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ApplicantGroup group;
 }
