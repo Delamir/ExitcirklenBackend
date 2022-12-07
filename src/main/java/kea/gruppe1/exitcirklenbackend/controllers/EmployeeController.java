@@ -2,7 +2,10 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
+import kea.gruppe1.exitcirklenbackend.models.RefreshToken;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.RefreshTokenRepository;
+import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +20,9 @@ public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    RefreshTokenService refreshTokenService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -59,6 +65,7 @@ public class EmployeeController {
     @DeleteMapping("/employees/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable Long id) {
         try {
+            refreshTokenService.deleteByUserId(id);
             employeeRepository.deleteById(id);
             return HttpStatus.OK;
         } catch (Exception e) {
