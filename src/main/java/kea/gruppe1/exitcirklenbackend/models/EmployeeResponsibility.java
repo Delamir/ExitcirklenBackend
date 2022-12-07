@@ -4,6 +4,6 @@ public enum EmployeeResponsibility {
 
     VISITATOR,
     ADMINISTRATOR,
-    GRUPPEANSVARLIGE,
+    GRUPPEANSVARLIG,
     MEDARBEJDER
 }

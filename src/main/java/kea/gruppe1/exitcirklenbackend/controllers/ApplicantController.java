@@ -48,7 +48,7 @@ public class ApplicantController {
             System.out.println(applicants);
             return applicants;
         }
-        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.GRUPPEANSVARLIGE.name())) {
+        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.GRUPPEANSVARLIG.name())) {
             System.out.println("GROUP");
             return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.VISITERET));
         }
