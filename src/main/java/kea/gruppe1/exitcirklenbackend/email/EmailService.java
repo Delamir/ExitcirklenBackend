@@ -30,7 +30,7 @@ public class EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    private final boolean doSendMessage = true;
+    private final boolean doSendMessage = false;
 
     public void sendHtmlMessage(Email email) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();

@@ -2,9 +2,7 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
-import kea.gruppe1.exitcirklenbackend.models.RefreshToken;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
-import kea.gruppe1.exitcirklenbackend.repositories.RefreshTokenRepository;
 import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
