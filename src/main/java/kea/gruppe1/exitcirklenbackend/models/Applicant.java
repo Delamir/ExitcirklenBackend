@@ -65,7 +65,6 @@ public class Applicant {
     @Column
     private LocalDateTime lastChanged = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ApplicantGroup group;
 }

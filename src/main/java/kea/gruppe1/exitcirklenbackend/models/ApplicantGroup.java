@@ -1,8 +1,8 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -50,6 +50,7 @@ public class ApplicantGroup {
 
 
     @Column
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<Applicant> inviteList = new ArrayList<>();
 
