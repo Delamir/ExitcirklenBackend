@@ -34,6 +34,7 @@ public class CityController {
     @PutMapping("/cities/{id}")
     public HttpStatus updateCityById(@PathVariable Long id, @RequestBody City cityToUpdateWith) {
         if (cityRepository.existsById(id)) {
+            System.out.println(cityToUpdateWith.getName());
             if (!cityToUpdateWith.getId().equals(id)) {
                 cityRepository.deleteById(id);
             }
@@ -43,6 +44,21 @@ public class CityController {
             return HttpStatus.BAD_REQUEST;
         }
     }
+
+    @PatchMapping("/cities/{id}")
+    public String PatchCityById(@PathVariable Long id, @RequestBody City cityToUpdateWith) {
+        cityRepository.findById(id).map(foundCity -> {
+            if (cityToUpdateWith.getName() != null)
+                foundCity.setName(cityToUpdateWith.getName());
+            if (cityToUpdateWith.getAddress() != null)
+                foundCity.setAddress(cityToUpdateWith.getAddress());
+
+            cityRepository.save(foundCity);
+            return "City was updated";
+        });
+        return "City was not found";
+    }
+
 
     @DeleteMapping("/cities/{id}")
     public HttpStatus deleteCityById(@PathVariable Long id) {
