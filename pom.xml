@@ -84,7 +84,6 @@
 		</dependency>
 
 		<dependency>
-			<!-- This dependency is only needed if you are using the TokenCrendentialAuthProvider -->
 			<groupId>com.azure</groupId>
 			<artifactId>azure-identity</artifactId>
 			<version>1.2.5</version>
