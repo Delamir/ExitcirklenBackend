@@ -16,13 +16,11 @@ import java.util.List;
 public class GraphService {
 
 
-    String clientId = "askufdha";
+    String clientId;
+    String tenant;
+    String clientSecret;
 
-    String tenant = "Slik mig";
-    String clientSecret = "Slik mig2";
-
-
-    List<String> scopes = new ArrayList<>(Arrays.asList("User.Read"));
+    List<String> scopes = new ArrayList<>(Arrays.asList("https://graph.microsoft.com/.default"));
 
     ClientSecretCredential provider = new ClientSecretCredentialBuilder()
             .clientId(clientId)
@@ -31,12 +29,15 @@ public class GraphService {
             .build();
     TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(scopes, provider);
 
-
     GraphServiceClient<Request> graphClient = GraphServiceClient
             .builder()
             .authenticationProvider(tokenCredentialAuthProvider)
             .buildClient();
 
-    User me = graphClient.me().buildRequest().get();
+    //User me = graphClient.me().buildRequest().get();
 
+    public void testTing() {
+        System.out.println(tokenCredentialAuthProvider);
+        System.out.println(graphClient.users().buildRequest().get());
+    }
 }

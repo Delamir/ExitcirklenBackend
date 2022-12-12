@@ -80,7 +80,7 @@
 		<dependency>
 			<groupId>com.microsoft.graph</groupId>
 			<artifactId>microsoft-graph</artifactId>
-			<version>3.5.0</version>
+			<version>5.42.0</version>
 		</dependency>
 
 		<dependency>
