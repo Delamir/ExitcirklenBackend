@@ -8,11 +8,13 @@ import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('GRUPPEANSVARLIG')")
 public class ApplicantGroupController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class ApplicantGroupController {
      * Gets all groups in the database
      */
     @GetMapping("/groups")
+    @PreAuthorize("isAuthenticated()")
     public List<ApplicantGroup> getGroups() {
 
 

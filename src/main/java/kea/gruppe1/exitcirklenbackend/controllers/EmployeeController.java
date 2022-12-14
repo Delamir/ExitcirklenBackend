@@ -6,6 +6,7 @@ import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
 import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class EmployeeController {
 
     @Autowired

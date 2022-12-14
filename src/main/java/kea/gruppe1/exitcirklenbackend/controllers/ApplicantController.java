@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('VISITATOR') or hasAuthority('GRUPPEANSVARLIG')")
 public class ApplicantController {
 
     @Autowired
@@ -37,7 +38,6 @@ public class ApplicantController {
      * Gets all applicants in the database
      */
     @GetMapping("/applicants")
-    @PreAuthorize("isAuthenticated()")
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
@@ -164,6 +164,7 @@ public class ApplicantController {
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */
     @DeleteMapping("/applicants/{id}")
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public HttpStatus deleteApplicant(@PathVariable Long id) {
         try {
             applicantRepository.deleteById(id);
