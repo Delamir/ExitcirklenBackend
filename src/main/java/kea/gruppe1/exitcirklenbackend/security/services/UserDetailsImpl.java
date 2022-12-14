@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import kea.gruppe1.exitcirklenbackend.models.City;
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
 
     private String email;
-    private String city;
+    private City city;
 
     private String phone;
 
@@ -34,7 +35,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email,String city, String phone,
+    public UserDetailsImpl(Long id, String username, String email,City city, String phone,
                            String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;

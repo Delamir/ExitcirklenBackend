@@ -25,8 +25,8 @@ public class ApplicantGroup {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String city;
+    @ManyToOne
+    private City city;
 
     @Column
     private String name;

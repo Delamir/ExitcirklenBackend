@@ -38,8 +38,8 @@ public class Applicant {
     @Column
     private String phoneNumber;
 
-    @Column
-    private String city;
+    @ManyToOne
+    private City city;
 
     @Enumerated(EnumType.ORDINAL)
     private ApplicantStatus status;

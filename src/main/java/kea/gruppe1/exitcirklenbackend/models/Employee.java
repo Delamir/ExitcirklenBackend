@@ -1,5 +1,7 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Setter
 @Table(name = "employees")
 @Entity(name = "Employee")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee {
 
 
@@ -30,8 +33,8 @@ public class Employee {
     @Column
     private String email;
 
-    @Column
-    private String city;
+    @ManyToOne
+    private City city;
 
     @Column
     private String phoneNumber;
@@ -50,4 +53,5 @@ public class Employee {
         this.email = email;
         this.password = password;
     }
+
 }

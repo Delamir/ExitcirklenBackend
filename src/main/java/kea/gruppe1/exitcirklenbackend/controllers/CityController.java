@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+//@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class CityController {
 
     @Autowired

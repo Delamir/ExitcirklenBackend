@@ -1,9 +1,12 @@
 package kea.gruppe1.exitcirklenbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +24,14 @@ public class City {
 
     @Column
     private String address;
+
+    @OneToMany
+    private List<Employee> employeeList;
+
+    @OneToMany
+    private List<Applicant> applicantList;
+
+    @OneToMany
+    private List<ApplicantGroup> applicantGroupList;
 
 }
