@@ -4,8 +4,10 @@ import kea.gruppe1.exitcirklenbackend.email.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
+import kea.gruppe1.exitcirklenbackend.models.City;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,8 @@ public class ApplicantGroupController {
     @Autowired
     ApplicantRepository applicantRepository;
     @Autowired
+    CityRepository cityRepository;
+    @Autowired
     EmailService emailService;
 
     /**
@@ -30,8 +34,6 @@ public class ApplicantGroupController {
     @GetMapping("/groups")
     @PreAuthorize("isAuthenticated()")
     public List<ApplicantGroup> getGroups() {
-
-
         return applicantGroupRepository.findAll();
     }
 
@@ -50,6 +52,12 @@ public class ApplicantGroupController {
         ApplicantGroup group = applicantGroupRepository.findById(id).get();
         int applicantCount = group.getInviteList().size();
         return group.getGroupSize() - applicantCount;
+    }
+
+    @GetMapping("/groups/by/{cityId}")
+    public List<ApplicantGroup> getApplicantGroupByCity(@PathVariable Long cityId) {
+        City city = cityRepository.findById(cityId).get();
+        return applicantGroupRepository.findApplicantGroupByCity(city);
     }
 
     @PostMapping("/groups")
