@@ -1,5 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.DTO;
 
+import kea.gruppe1.exitcirklenbackend.models.City;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ public class JwtResponse {
     private String token;
     private String type = "Bearer";
     private Long id;
+    private City city;
     private String refreshToken;
     private String username;
     private String email;
@@ -21,10 +23,11 @@ public class JwtResponse {
     public JwtResponse(){
 
     }
-    public JwtResponse(String accessToken,String refreshToken, Long id, String username, String email, String phone, List<String> roles) {
+    public JwtResponse(String accessToken,String refreshToken, Long id, City city, String username, String email, String phone, List<String> roles) {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
+        this.city = city;
         this.username = username;
         this.email = email;
         this.phone = phone;

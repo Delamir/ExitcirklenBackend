@@ -2,13 +2,12 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.DTO.ApplicantDTO;
 import kea.gruppe1.exitcirklenbackend.email.EmailService;
-import kea.gruppe1.exitcirklenbackend.models.Applicant;
-import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
-import kea.gruppe1.exitcirklenbackend.models.SurveyResult;
-import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
+import kea.gruppe1.exitcirklenbackend.models.*;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
 import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
+import org.spongycastle.crypto.tls.CipherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +30,8 @@ public class ApplicantController {
     ApplicantRepository applicantRepository;
     @Autowired
     SurveyResultRepository surveyResultRepository;
+    @Autowired
+    CityRepository cityRepository;
 
     EmailService emailService;
 
@@ -87,14 +88,15 @@ public class ApplicantController {
         return applicantRepository.findApplicantByPaidStatusAndStatus(true, ApplicantStatus.VISITERET);
     }
 
-    /**
-     * Gets all applicants from a specified city
-     *
-     * @param city is the wanted city
-     * @return A list of all applicants with the specified city
-     */
-    @GetMapping("/applicants/by/{city}")
-    public List<Applicant> getApplicantsByCity(@PathVariable String city) {
+    @GetMapping("/applicants/waiting-list/{cityId}")
+    public List<Applicant> getApplicantsByPaidStatusAndStatusAndCity(@PathVariable Long cityId) {
+        City city = cityRepository.findById(cityId).get();
+        return applicantRepository.findApplicantByPaidStatusAndStatusAndCity(true, ApplicantStatus.VISITERET, city);
+    }
+
+    @GetMapping("/applicants/by/{cityId}")
+    public List<Applicant> getApplicantsByCity(@PathVariable Long cityId) {
+        City city = cityRepository.findById(cityId).get();
         return applicantRepository.findApplicantByCity(city);
     }
 
