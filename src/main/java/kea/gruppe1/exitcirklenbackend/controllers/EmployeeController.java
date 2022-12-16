@@ -62,6 +62,23 @@ public class EmployeeController {
         }
     }
 
+    @PatchMapping("/employees/{id}")
+    public HttpStatus updateEmployees(@PathVariable Long id,
+                                      @RequestBody Employee employeeToUpdate) {
+        employeeRepository.findById(id).map(employee -> {
+            if (employeeToUpdate.getName() != null) employee.setName(employeeToUpdate.getName());
+            if (employeeToUpdate.getAge() != 0) employee.setAge(employeeToUpdate.getAge());
+            if (employeeToUpdate.getEmail() != null) employee.setEmail(employeeToUpdate.getEmail());
+            if (employeeToUpdate.getCity() != null) employee.setCity(employeeToUpdate.getCity());
+            if (employeeToUpdate.getPhoneNumber() != null) employee.setPhoneNumber(employeeToUpdate.getPhoneNumber());
+            if (employeeToUpdate.getRole() != null) employee.setRole(employeeToUpdate.getRole());
+
+            employeeRepository.save(employee);
+            return HttpStatus.OK;
+        });
+        return HttpStatus.BAD_REQUEST;
+    }
+
     @DeleteMapping("/employees/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable Long id) {
         try {
