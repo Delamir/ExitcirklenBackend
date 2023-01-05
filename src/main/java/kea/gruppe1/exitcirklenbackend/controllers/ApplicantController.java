@@ -1,7 +1,7 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.DTO.ApplicantDTO;
-import kea.gruppe1.exitcirklenbackend.email.EmailService;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.*;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
@@ -39,7 +39,6 @@ public class ApplicantController {
     @GetMapping("/applicants")
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
 
         if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
             List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));

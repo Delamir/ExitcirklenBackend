@@ -1,4 +1,4 @@
-package kea.gruppe1.exitcirklenbackend.email;
+package kea.gruppe1.exitcirklenbackend.services;
 
 
 import kea.gruppe1.exitcirklenbackend.models.Applicant;

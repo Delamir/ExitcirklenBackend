@@ -1,6 +1,6 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
-import kea.gruppe1.exitcirklenbackend.email.EmailService;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
