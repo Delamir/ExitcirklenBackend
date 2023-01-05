@@ -80,11 +80,6 @@ class ApplicantControllerTest {
                 .andReturn();
 
         assertEquals(0, result.getResponse().getContentAsString().length());
-
-
-
-
-
     }
 
     @Test
