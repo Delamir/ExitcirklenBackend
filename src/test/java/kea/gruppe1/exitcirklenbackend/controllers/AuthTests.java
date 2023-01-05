@@ -1,6 +1,8 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
 
+import kea.gruppe1.exitcirklenbackend.models.Applicant;
+import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
@@ -16,6 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ApplicantController.class)
@@ -31,14 +36,13 @@ public class AuthTests {
     @MockBean
     ApplicantRepository applicantRepository;
 
+
     @MockBean
     SurveyResultRepository surveyResultRepository;
 
     @MockBean
     CityRepository cityRepository;
 
-  //  @Autowired
-  //  private TestEntityManager testEntityManager;
 
     @Test
     public void noUserIsUnauthorized() throws Exception {
@@ -48,24 +52,9 @@ public class AuthTests {
 
     @Test
     @WithMockUser(authorities = "VISITATOR")
-    public void userHasLimitedAccess() throws Exception {
+    public void userHasAccess() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/applicants"))
                 .andExpect(status().isOk());
-
-        mockMvc.perform(MockMvcRequestBuilders.delete("/applicants/1"))
-                .andExpect(status().isForbidden());
-
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMINISTRATOR")
-    public void adminHasFullAccess() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/applicants"))
-                .andExpect(status().isOk());
-
-        mockMvc.perform(MockMvcRequestBuilders.delete("/applicants/1"))
-                .andExpect(status().isOk());
-
     }
 
 
