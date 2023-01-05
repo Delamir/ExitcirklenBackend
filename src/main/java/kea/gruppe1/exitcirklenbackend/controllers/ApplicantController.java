@@ -7,7 +7,6 @@ import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
 import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
-import org.spongycastle.crypto.tls.CipherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -88,12 +86,22 @@ public class ApplicantController {
         return applicantRepository.findApplicantByPaidStatusAndStatus(true, ApplicantStatus.VISITERET);
     }
 
+    /**
+     * Gets all applicants by city, paid status if it is true and the VISISTERET status
+     * @param cityId the id of a specific city
+     * @return a list of applicants
+     */
     @GetMapping("/applicants/waiting-list/{cityId}")
     public List<Applicant> getApplicantsByPaidStatusAndStatusAndCity(@PathVariable Long cityId) {
         City city = cityRepository.findById(cityId).get();
         return applicantRepository.findApplicantByPaidStatusAndStatusAndCity(true, ApplicantStatus.VISITERET, city);
     }
 
+    /**
+     * Gets a list of applicants by a specific city
+     * @param cityId the id of a specific city
+     * @return a list of applicants
+     */
     @GetMapping("/applicants/by/{cityId}")
     public List<Applicant> getApplicantsByCity(@PathVariable Long cityId) {
         City city = cityRepository.findById(cityId).get();
@@ -108,6 +116,11 @@ public class ApplicantController {
         return new ArrayList<>(Arrays.asList(ApplicantStatus.values()));
     }
 
+    /**
+     * Creates and applicant in the database
+     * @param newApplicant applicant data to save
+     * @return the saved applicant
+     */
     @PostMapping("/applicants")
     public Applicant createApplicant(@RequestBody Applicant newApplicant) {
         if (newApplicant.getUserType() == 1) {
@@ -177,6 +190,12 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Saves a survey to the database
+     * @param id the id of the applicant who took the survey
+     * @param surveyResult data from the servey
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/{id}/survey")
     public HttpStatus completeSurvey(@PathVariable Long id, @RequestBody SurveyResult surveyResult) {
         try {
@@ -190,6 +209,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Sends a visitation request to an applicant
+     * @param applicantDTO the required applicant data to process the email
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/visitation-request")
     public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
@@ -205,6 +229,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Sends an email to cancel a visitation
+     * @param applicantDTO the required applicant data to process the email
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/cancel-visitation")
     public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO) {
         try {
@@ -219,6 +248,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Confirms a visitation for the applicant
+     * @param applicant the applicant that have confirmed the visitation
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/confirm-visitation")
     public HttpStatus confirmVisitation(@RequestBody Applicant applicant) {
         try {
@@ -236,7 +270,5 @@ public class ApplicantController {
     @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
-
     }
-
 }

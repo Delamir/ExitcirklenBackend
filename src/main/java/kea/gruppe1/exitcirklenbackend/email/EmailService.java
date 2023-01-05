@@ -6,7 +6,6 @@ import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
 import kea.gruppe1.exitcirklenbackend.models.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,10 @@ public class EmailService {
 
     private final boolean doSendMessage = false;
 
+    /**
+     * Helps to configure an email as a html message
+     * @param email the email object that is configured
+     */
     public void sendHtmlMessage(Email email) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
@@ -48,6 +51,11 @@ public class EmailService {
             emailSender.send(message);
     }
 
+    /**
+     * Creates an email template with data from an applicant
+     * @param applicant the applicant object with wanted data
+     * @return an email object
+     */
     public Email createEmail(Applicant applicant) {
         Email email = new Email();
         email.setTo(applicant.getEmail());
@@ -58,7 +66,11 @@ public class EmailService {
         return email;
     }
 
-
+    /**
+     * Sends an email invitation to an applicant group
+     * @param group the specific applicant group
+     * @param applicants the applicants tha needs to receive the email
+     */
     public void sendInvitations(ApplicantGroup group, List<Applicant> applicants) {
         for (Applicant applicant : applicants) {
             Email email = createEmail(applicant);
@@ -75,6 +87,10 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends a welcome email to a specific applicant
+     * @param applicant the specified applicant
+     */
     public void sendWelcomeEmail(Applicant applicant) {
         Email email = createEmail(applicant);
         email.setSubject("Vellkommen til Exitcirklen");
@@ -87,6 +103,11 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends an email with a visitation offer
+     * @param applicant the receiving applicant
+     * @param time the time of the visitation
+     */
     public void sendVisitationOfferEmail(Applicant applicant, LocalDateTime time) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Visitations tilbud");
@@ -101,6 +122,11 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends an email that cancels a visitation
+     * @param applicant the receiving applicant
+     * @param reason the reason for the cancellation
+     */
     public void sendCancelVisitationEmail(Applicant applicant, String reason) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Aflysning af visistering");
@@ -116,6 +142,10 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends a confirmation email on a visitation
+     * @param applicant the receiving applicant
+     */
     public void sendConfirmationVisitationEmail(Applicant applicant) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Aflysning af visistering");
@@ -128,6 +158,10 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends a confirmation that an applicant is now on a waiting list
+     * @param applicant the receiving applicant
+     */
     public void sendWaitinglistConfirmationEmail(Applicant applicant) {
         Email email = createEmail(applicant);
         email.setSubject("Exitcirklen | Venteliste bekræftelse");
@@ -140,6 +174,11 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends a welcome mail to an applicant group
+     * @param applicant the applicant that has joined the group
+     * @param group the group of which the applicant has joined
+     */
     public void sendGroupWelcomeEmail(Applicant applicant, ApplicantGroup group) {
         Email email = createEmail(applicant);
         email.setSubject("Velkomst");
@@ -155,11 +194,12 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends an email with a newsletter
+     */
+    //TODO
     public void sendNewsletter() {
         Email email = new Email();
         email.setSubject("");
-
     }
-
-
 }

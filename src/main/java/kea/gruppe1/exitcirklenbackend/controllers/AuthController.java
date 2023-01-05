@@ -44,6 +44,11 @@ public class AuthController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
+    /**
+     * Handles the log in request of a use
+     * @param loginRequest the login details that needs to be authenticated
+     * @return a response entity with user details of the authenticated user
+     */
     @PostMapping("/auth/signin")
     public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
 
@@ -72,6 +77,11 @@ public class AuthController {
     }
 
 
+    /**
+     * Handles refresh token so the session is still valid after browser is closed
+     * @param request the requested refresh token
+     * @return a refresh token
+     */
     @PostMapping("/auth/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
@@ -91,6 +101,10 @@ public class AuthController {
         return new HashMap<String, Object>(claims);
     }
 
+    /**
+     * Handles sign out of a logged in user
+     * @return a response entity ok with a specified message
+     */
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -99,6 +113,10 @@ public class AuthController {
         return ResponseEntity.ok("Log out successful!");
     }
 
+    /**
+     * Seeds an admin user if the database is wiped
+     * @return a response entity ok with a specified message
+     */
     @PostMapping("/auth/adminsignup")
     public ResponseEntity<?> registerUser() {
         if (employeeRepository.existsByEmail("admin@admin.admin")) {

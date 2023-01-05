@@ -29,6 +29,11 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
+    /**
+     * Creates a refresh token on a logged-in user
+     * @param userId the logged-in user
+     * @return a refresh token
+     */
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken refreshToken = new RefreshToken();
 
@@ -40,6 +45,11 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
+    /**
+     * Verifies the refresh tokens expiration
+     * @param token the specified refresh token
+     * @return refresh token
+     */
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
@@ -49,6 +59,11 @@ public class RefreshTokenService {
         return token;
     }
 
+    /**
+     * Deletes a fresh token
+     * @param userId the user connected to the refresh token
+     * @return the refresh token key
+     */
     @Transactional
     public int deleteByUserId(Long userId) {
         return refreshTokenRepository.deleteByEmployee(employeeRepository.findById(userId).get());

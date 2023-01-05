@@ -8,5 +8,10 @@ import java.util.List;
 
 public interface ApplicantGroupRepository extends JpaRepository<ApplicantGroup, Long> {
 
+    /**
+     * Finds all applicant groups from the specified city
+     * @param city the specific city
+     * @return a list of applicant groups
+     */
     List<ApplicantGroup> findApplicantGroupByCity(City city);
 }

@@ -1,6 +1,5 @@
 package kea.gruppe1.exitcirklenbackend.security.jwt;
 
-import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
