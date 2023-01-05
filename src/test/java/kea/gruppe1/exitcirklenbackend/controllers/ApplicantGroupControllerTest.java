@@ -2,7 +2,10 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
+import kea.gruppe1.exitcirklenbackend.models.ApplicantStatus;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantGroupRepository;
+import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,9 +20,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,6 +48,10 @@ public class ApplicantGroupControllerTest {
 
     @Mock
     ApplicantGroupRepository applicantGroupRepository;
+    @Mock
+    ApplicantRepository applicantRepository;
+    @Mock
+    EmailService emailService;
 
     @Test
     @WithMockUser(authorities = "ADMINISTRATOR")
@@ -92,5 +104,24 @@ public class ApplicantGroupControllerTest {
 
         applicantGroup.removeFromInviteList(applicant);
         assertEquals(24, applicantGroupController.availableCount(1L));
+    }
+
+    @Test
+    void sendInvites() {
+
+        ApplicantGroup applicantGroup = new ApplicantGroup();
+        applicantGroup.setId(1L);
+
+        Applicant applicant = new Applicant();
+        applicant.setId(1L);
+
+        when(applicantGroupRepository.getReferenceById(1L)).thenReturn(applicantGroup);
+        when(applicantRepository.getReferenceById(1L)).thenReturn(applicant);
+        doNothing().when(emailService).sendInvitations(any(ApplicantGroup.class),anyList());
+
+        applicantGroupController.sendInvites(1L, List.of(1L));
+        assertEquals(ApplicantStatus.INVITERET, applicant.getStatus());
+        assertEquals(applicantGroup,applicant.getGroup());
+
     }
 }
