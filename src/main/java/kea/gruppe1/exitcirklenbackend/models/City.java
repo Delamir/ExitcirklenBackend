@@ -1,7 +1,4 @@
 package kea.gruppe1.exitcirklenbackend.models;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
