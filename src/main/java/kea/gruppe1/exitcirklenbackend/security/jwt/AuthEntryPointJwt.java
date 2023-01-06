@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * made with help from https://www.bezkoder.com/spring-boot-react-jwt-auth/
+ */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 

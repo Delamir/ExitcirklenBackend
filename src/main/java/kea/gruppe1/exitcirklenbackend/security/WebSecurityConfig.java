@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * made with help from https://www.bezkoder.com/spring-boot-react-jwt-auth/
+ */
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(

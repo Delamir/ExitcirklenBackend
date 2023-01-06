@@ -16,8 +16,6 @@ import java.util.List;
 
 @Component
 public class GraphService {
-
-
     @Value("${exitcirklen.app.clientId}")
     String clientId;
     @Value("${exitcirklen.app.tenantId}")

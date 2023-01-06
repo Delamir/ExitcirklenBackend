@@ -107,7 +107,7 @@ public class ApplicantGroupControllerTest {
     }
 
     @Test
-    void sendInvites() {
+    void sendGroupInvites() {
 
         ApplicantGroup applicantGroup = new ApplicantGroup();
         applicantGroup.setId(1L);

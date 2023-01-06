@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Getter
 @Setter
 public class UserDetailsImpl implements UserDetails {

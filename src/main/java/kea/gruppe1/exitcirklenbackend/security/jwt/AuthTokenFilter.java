@@ -20,6 +20,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
+/**
+ * made with help from https://www.bezkoder.com/spring-boot-react-jwt-auth/
+ */
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;

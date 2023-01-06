@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * made with help from https://www.bezkoder.com/spring-boot-react-jwt-auth/
+ */
 @RestController
 public class AuthController {
 

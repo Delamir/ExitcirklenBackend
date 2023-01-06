@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+/**
+ * made with help from https://www.bezkoder.com/spring-boot-react-jwt-auth/
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
