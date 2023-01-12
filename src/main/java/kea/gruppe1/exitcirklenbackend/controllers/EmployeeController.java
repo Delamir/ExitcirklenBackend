@@ -41,7 +41,7 @@ public class EmployeeController {
      * @param id the id on the employee
      * @return the employee or null if the employee is not found
      */
-    @GetMapping("/employee/{id}")
+    @GetMapping("/employees/{id}")
     public Employee getEmployee(@PathVariable Long id) {
         return employeeRepository.findById(id).orElse(null);
     }
@@ -50,7 +50,7 @@ public class EmployeeController {
      * Gets all employee responsibilities
      * @return a list of employee responsibilities
      */
-    @GetMapping("/employee/responsibility")
+    @GetMapping("/employees/responsibility")
     public List<EmployeeResponsibility> getResponsibilities() {
         return new ArrayList<>(Arrays.asList(EmployeeResponsibility.values()));
     }

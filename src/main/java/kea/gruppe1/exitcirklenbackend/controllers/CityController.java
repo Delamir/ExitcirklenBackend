@@ -30,7 +30,7 @@ public class CityController {
      * @param id the specified city id
      * @return the city or null if no city has the id
      */
-    @GetMapping("/city/{id}")
+    @GetMapping("/cities/{id}")
     public City getCity(@PathVariable Long id) {
         return cityRepository.findById(id).orElse(null);
     }

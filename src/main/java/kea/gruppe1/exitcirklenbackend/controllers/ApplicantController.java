@@ -158,10 +158,12 @@ public class ApplicantController {
                 applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
             }
+            if (applicantToUpdate.isPaidStatus() != applicant.isPaidStatus()) applicant.setPaidStatus(applicantToUpdate.isPaidStatus());
             if (applicantToUpdate.getDescription() != null)
                 applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
+            applicant.setContactEmail(applicantToUpdate.isContactEmail());
             applicant.setContactCall(applicantToUpdate.isContactCall());
             applicant.setContactText(applicantToUpdate.isContactText());
 

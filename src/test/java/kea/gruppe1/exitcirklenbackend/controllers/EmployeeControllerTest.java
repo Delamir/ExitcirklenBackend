@@ -52,7 +52,7 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"));
 
-        mockMvc.perform(get("/employee/1"))
+        mockMvc.perform(get("/employees/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.name").value("Kurt"))
@@ -64,14 +64,14 @@ class EmployeeControllerTest {
                         .content(body))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/employee/1"))
+        mockMvc.perform(get("/employees/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Ole"));
 
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isOk());
 
-        MvcResult result = mockMvc.perform(get("/employee/1"))
+        MvcResult result = mockMvc.perform(get("/employees/1"))
                 .andExpect(status().isOk())
                 .andReturn();
 
