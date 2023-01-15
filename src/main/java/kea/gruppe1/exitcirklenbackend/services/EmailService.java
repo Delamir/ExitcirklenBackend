@@ -29,7 +29,7 @@ public class EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    private final boolean doSendMessage = false;
+    private final boolean doSendMessage = true;
 
     /**
      * Helps to configure an email as a html message
@@ -148,7 +148,7 @@ public class EmailService {
      */
     public void sendConfirmationVisitationEmail(Applicant applicant) {
         Email email = createEmail(applicant);
-        email.setSubject("Exitcirklen | Aflysning af visistering");
+        email.setSubject("Exitcirklen | Bekræftelse af visistering");
         email.setTemplate("confirmation-visitation-email");
 
         try {

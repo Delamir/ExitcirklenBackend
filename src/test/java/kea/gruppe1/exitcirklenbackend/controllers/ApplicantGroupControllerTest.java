@@ -108,7 +108,6 @@ public class ApplicantGroupControllerTest {
 
     @Test
     void sendGroupInvites() {
-
         ApplicantGroup applicantGroup = new ApplicantGroup();
         applicantGroup.setId(1L);
 
