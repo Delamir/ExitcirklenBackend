@@ -11,8 +11,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+
+    /**
+     * Finds refresh tokens
+     * @param token the specified token
+     * @return a refresh token
+     */
     Optional<RefreshToken> findByToken(String token);
 
+    /**
+     * Deletes a refresh token connected to an employee
+     * @param employee the specified employee
+     */
     @Modifying
     int deleteByEmployee(Employee employee);
 }

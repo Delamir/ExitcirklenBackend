@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class CityController {
 
     @Autowired
@@ -27,6 +27,10 @@ public class CityController {
         return "return";
     }
 
+    /**
+     * Gets all cities
+     * @return a list of cities
+     */
     @GetMapping("/cities")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<City> getCities(@AuthenticationPrincipal AuthenticationPrincipal a) {
@@ -34,16 +38,32 @@ public class CityController {
         return cityRepository.findAll();
     }
 
-    @GetMapping("/city/{id}")
+    /**
+     * Gets a single city from the id
+     * @param id the specified city id
+     * @return the city or null if no city has the id
+     */
+    @GetMapping("/cities/{id}")
     public City getCity(@PathVariable Long id) {
         return cityRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Saves a new city to the database
+     * @param newCity the data to save
+     * @return the saved city
+     */
     @PostMapping("/cities")
     public City addCity(@RequestBody City newCity) {
         return cityRepository.save(newCity);
     }
 
+    /**
+     * Replaces a city in the database with new data
+     * @param id the id of the city that is replaced
+     * @param cityToUpdateWith the new city data
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PutMapping("/cities/{id}")
     public HttpStatus updateCityById(@PathVariable Long id, @RequestBody City cityToUpdateWith) {
         if (cityRepository.existsById(id)) {
@@ -58,6 +78,12 @@ public class CityController {
         }
     }
 
+    /**
+     * Update data on a city in the database
+     * @param id the id of the city
+     * @param cityToUpdateWith the city object with the new data
+     * @return a string with a success or failed message
+     */
     @PatchMapping("/cities/{id}")
     public String PatchCityById(@PathVariable Long id, @RequestBody City cityToUpdateWith) {
         cityRepository.findById(id).map(foundCity -> {
@@ -73,6 +99,11 @@ public class CityController {
     }
 
 
+    /**
+     * Deletes a specific city
+     * @param id the id of the city
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @DeleteMapping("/cities/{id}")
     public HttpStatus deleteCityById(@PathVariable Long id) {
         try {

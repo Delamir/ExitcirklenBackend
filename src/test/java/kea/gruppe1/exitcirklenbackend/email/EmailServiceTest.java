@@ -2,7 +2,7 @@ package kea.gruppe1.exitcirklenbackend.email;
 
 import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.ApplicantGroup;
-import kea.gruppe1.exitcirklenbackend.models.Email;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.mail.MessagingException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class EmailServiceTest {

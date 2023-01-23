@@ -1,3 +1,6 @@
+/**
+ * Test controller
+ */
 //package kea.gruppe1.exitcirklenbackend.controllers;
 //
 //import kea.gruppe1.exitcirklenbackend.security.services.GraphService;

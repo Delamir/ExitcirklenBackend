@@ -3,6 +3,9 @@ package kea.gruppe1.exitcirklenbackend.advice;
 
 import java.time.LocalDateTime;
 
+/**
+ * A custom errormessage used in the token controller
+ */
 public class ErrorMessage {
     private int statusCode;
     private LocalDateTime timestamp;

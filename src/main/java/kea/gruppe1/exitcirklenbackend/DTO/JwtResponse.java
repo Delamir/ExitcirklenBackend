@@ -21,8 +21,8 @@ public class JwtResponse {
     private List<String> roles;
 
     public JwtResponse(){
-
     }
+
     public JwtResponse(String accessToken,String refreshToken, Long id, City city, String username, String email, String phone, List<String> roles) {
         this.token = accessToken;
         this.refreshToken = refreshToken;
@@ -32,11 +32,9 @@ public class JwtResponse {
         this.email = email;
         this.phone = phone;
         this.roles = roles;
-
     }
 
     public String getPhone(){
         return phone;
     }
-
 }

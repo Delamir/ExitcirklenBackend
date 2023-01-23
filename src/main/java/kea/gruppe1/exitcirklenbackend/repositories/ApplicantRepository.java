@@ -11,12 +11,17 @@ import java.util.List;
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     /**
-     * Finds all applicant by a specific status
+     * Finds all applicants by a specific status
      * @param status the wanted status to search for
      * @return a list of all applicants with the specified status
      */
     List<Applicant> findApplicantByStatus(ApplicantStatus status);
 
+    /**
+     * Find all applicants in multiple statuses
+     * @param statuses the list of specified statues
+     * @return a list of applicants
+     */
     List<Applicant> findApplicantByStatusIn(Collection<ApplicantStatus> statuses);
 
     /**
@@ -34,5 +39,12 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
      */
     List<Applicant> findApplicantByPaidStatusAndStatus(boolean paidStatus, ApplicantStatus status);
 
+    /**
+     * Finds all applicants by their paid status, their status and their city
+     * @param paidStatus is the paid status either true or false
+     * @param status the status of an applicant
+     * @param city the specified city
+     * @return a list of applicants
+     */
     List<Applicant> findApplicantByPaidStatusAndStatusAndCity(boolean paidStatus, ApplicantStatus status, City city);
 }

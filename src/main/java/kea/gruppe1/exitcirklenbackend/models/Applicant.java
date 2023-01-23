@@ -58,6 +58,9 @@ public class Applicant {
     private boolean contactText;
 
     @Column
+    private boolean contactEmail;
+
+    @Column
     private int userType;
 
     @Column

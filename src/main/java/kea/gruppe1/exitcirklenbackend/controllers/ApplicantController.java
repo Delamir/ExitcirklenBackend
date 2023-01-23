@@ -1,7 +1,7 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
 import kea.gruppe1.exitcirklenbackend.DTO.ApplicantDTO;
-import kea.gruppe1.exitcirklenbackend.email.EmailService;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
 import kea.gruppe1.exitcirklenbackend.models.*;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public class ApplicantController {
     @GetMapping("/applicants")
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
 
         if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
             List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
@@ -86,12 +84,22 @@ public class ApplicantController {
         return applicantRepository.findApplicantByPaidStatusAndStatus(true, ApplicantStatus.VISITERET);
     }
 
+    /**
+     * Gets all applicants by city, paid status if it is true and the VISISTERET status
+     * @param cityId the id of a specific city
+     * @return a list of applicants
+     */
     @GetMapping("/applicants/waiting-list/{cityId}")
     public List<Applicant> getApplicantsByPaidStatusAndStatusAndCity(@PathVariable Long cityId) {
         City city = cityRepository.findById(cityId).get();
         return applicantRepository.findApplicantByPaidStatusAndStatusAndCity(true, ApplicantStatus.VISITERET, city);
     }
 
+    /**
+     * Gets a list of applicants by a specific city
+     * @param cityId the id of a specific city
+     * @return a list of applicants
+     */
     @GetMapping("/applicants/by/{cityId}")
     public List<Applicant> getApplicantsByCity(@PathVariable Long cityId) {
         City city = cityRepository.findById(cityId).get();
@@ -106,6 +114,11 @@ public class ApplicantController {
         return new ArrayList<>(Arrays.asList(ApplicantStatus.values()));
     }
 
+    /**
+     * Creates and applicant in the database
+     * @param newApplicant applicant data to save
+     * @return the saved applicant
+     */
     @PostMapping("/applicants")
     public Applicant createApplicant(@RequestBody Applicant newApplicant) {
         if (newApplicant.getUserType() == 1) {
@@ -145,10 +158,12 @@ public class ApplicantController {
                 applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
             }
+            if (applicantToUpdate.isPaidStatus() != applicant.isPaidStatus()) applicant.setPaidStatus(applicantToUpdate.isPaidStatus());
             if (applicantToUpdate.getDescription() != null)
                 applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
 
+            applicant.setContactEmail(applicantToUpdate.isContactEmail());
             applicant.setContactCall(applicantToUpdate.isContactCall());
             applicant.setContactText(applicantToUpdate.isContactText());
 
@@ -176,6 +191,12 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Saves a survey to the database
+     * @param id the id of the applicant who took the survey
+     * @param surveyResult data from the servey
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/{id}/survey")
     public HttpStatus completeSurvey(@PathVariable Long id, @RequestBody SurveyResult surveyResult) {
         try {
@@ -189,6 +210,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Sends a visitation request to an applicant
+     * @param applicantDTO the required applicant data to process the email
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/visitation-request")
     public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
         try {
@@ -204,6 +230,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Sends an email to cancel a visitation
+     * @param applicantDTO the required applicant data to process the email
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/cancel-visitation")
     public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO) {
         try {
@@ -218,6 +249,11 @@ public class ApplicantController {
         }
     }
 
+    /**
+     * Confirms a visitation for the applicant
+     * @param applicant the applicant that have confirmed the visitation
+     * @return either a http status of 200 or a status of 400 if something goes wrong
+     */
     @PostMapping("/applicants/confirm-visitation")
     public HttpStatus confirmVisitation(@RequestBody Applicant applicant) {
         try {
@@ -235,7 +271,5 @@ public class ApplicantController {
     @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
-
     }
-
 }
