@@ -6,8 +6,6 @@ import kea.gruppe1.exitcirklenbackend.models.*;
 import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.SurveyResultRepository;
-import kea.gruppe1.exitcirklenbackend.security.services.UserDetailsImpl;
-import org.spongycastle.crypto.tls.CipherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +39,7 @@ public class ApplicantController {
     @GetMapping("/applicants")
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
+        //UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
 
         if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
             List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
@@ -135,6 +133,7 @@ public class ApplicantController {
             if (applicantToUpdate.getName() != null) applicant.setName(applicantToUpdate.getName());
             if (applicantToUpdate.getAge() != null) applicant.setAge(applicantToUpdate.getAge());
             if (applicantToUpdate.getGender() != null) applicant.setGender(applicantToUpdate.getGender());
+
             if (applicantToUpdate.getEmail() != null) applicant.setEmail(applicantToUpdate.getEmail());
             if (applicantToUpdate.getPhoneNumber() != null)
                 applicant.setPhoneNumber(applicantToUpdate.getPhoneNumber());

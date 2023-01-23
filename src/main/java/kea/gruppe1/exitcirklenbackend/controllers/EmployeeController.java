@@ -7,7 +7,6 @@ import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class EmployeeController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
-    @Autowired
-    PasswordEncoder encoder;
 
     @GetMapping("/employees")
     public List<Employee> getEmployees() {
@@ -44,7 +41,7 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     public Employee addEmployee(@RequestBody Employee newEmployee) {
-        newEmployee.setPassword(encoder.encode(newEmployee.getPassword()));
+        //newEmployee.setPassword(encoder.encode(newEmployee.getPassword()));
         return employeeRepository.save(newEmployee);
     }
 
@@ -54,7 +51,7 @@ public class EmployeeController {
             if(!employeeToUpdateWith.getId().equals(id)) {
                 employeeRepository.deleteById(id);
             }
-            employeeToUpdateWith.setPassword(encoder.encode(employeeToUpdateWith.getPassword()));
+          //  employeeToUpdateWith.setPassword(encoder.encode(employeeToUpdateWith.getPassword()));
             employeeRepository.save(employeeToUpdateWith);
             return HttpStatus.OK;
         } else {

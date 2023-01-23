@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity(name = "refreshtoken")
 @Getter

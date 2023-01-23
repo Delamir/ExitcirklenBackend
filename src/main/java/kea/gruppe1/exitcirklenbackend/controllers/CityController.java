@@ -5,6 +5,7 @@ import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,20 @@ public class CityController {
     @Autowired
     CityRepository cityRepository;
 
+    @GetMapping("/")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('SCOPE_User.Read')")
+    public String getget(@AuthenticationPrincipal AuthenticationPrincipal a) {
+
+        System.out.println(a);
+
+        return "return";
+    }
+
     @GetMapping("/cities")
-    public List<City> getCities() {
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<City> getCities(@AuthenticationPrincipal AuthenticationPrincipal a) {
+        System.out.println(a);
         return cityRepository.findAll();
     }
 
