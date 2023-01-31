@@ -18,40 +18,26 @@ import java.util.Set;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee {
 
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
+    private String email;
+
+    @Transient
     private String name;
 
-    @Column
-    private int age;
-
-    @Column
-    private String email;
+    @Transient
+    private String phoneNumber;
 
     @ManyToOne
     private City city;
 
-    @Column
-    private String phoneNumber;
-
+    @Transient
     @Enumerated(EnumType.STRING)
     private EmployeeResponsibility role;
 
-    @Column
-    private String password;
-
-    public Employee() {
-
-    }
-
-    public Employee(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
 }

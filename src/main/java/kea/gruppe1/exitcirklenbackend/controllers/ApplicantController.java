@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('VISITATOR') or hasAuthority('GRUPPEANSVARLIG')")
+//@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('VISITATOR') or hasAuthority('GRUPPEANSVARLIG')")
 public class ApplicantController {
 
     @Autowired
@@ -39,12 +41,12 @@ public class ApplicantController {
     public List<Applicant> getApplicants() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.VISITATOR.name())) {
+        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.visitator.name())) {
             List<Applicant> applicants = applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.IKKE_VISITERET, ApplicantStatus.I_PROCESS));
             return applicants;
         }
 
-        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.GRUPPEANSVARLIG.name())) {
+        if (authentication.getAuthorities().toArray()[0].toString().equals(EmployeeResponsibility.group.name())) {
             return applicantRepository.findApplicantByStatusIn(Arrays.asList(ApplicantStatus.VISITERET));
         }
 
@@ -120,14 +122,15 @@ public class ApplicantController {
      * @return the saved applicant
      */
     @PostMapping("/applicants")
-    public Applicant createApplicant(@RequestBody Applicant newApplicant) {
+    public Applicant createApplicant(@RequestBody Applicant newApplicant, @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         if (newApplicant.getUserType() == 1) {
             newApplicant.setStatus(ApplicantStatus.IKKE_VISITERET);
         } else {
             newApplicant.setStatus(null);
             newApplicant.setLastChanged(null);
         }
-        emailService.sendWelcomeEmail(newApplicant);
+        // TO - DO make admin send
+        emailService.sendWelcomeEmail(newApplicant, graph);
         return applicantRepository.save(newApplicant);
     }
 
@@ -159,6 +162,7 @@ public class ApplicantController {
 
             }
             if (applicantToUpdate.isPaidStatus() != applicant.isPaidStatus()) applicant.setPaidStatus(applicantToUpdate.isPaidStatus());
+
             if (applicantToUpdate.getDescription() != null)
                 applicant.setDescription(applicantToUpdate.getDescription());
             if (applicantToUpdate.getPriority() != 0) applicant.setPriority(applicantToUpdate.getPriority());
@@ -216,10 +220,9 @@ public class ApplicantController {
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */
     @PostMapping("/applicants/visitation-request")
-    public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO) {
+    public HttpStatus visitationRequest(@RequestBody ApplicantDTO applicantDTO, @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         try {
-            System.out.println(emailService);
-            emailService.sendVisitationOfferEmail(applicantDTO.getApplicant(), applicantDTO.getTime());
+            emailService.sendVisitationOfferEmail(applicantDTO.getApplicant(), applicantDTO.getTime(), graph);
             applicantDTO.getApplicant().setStatus(ApplicantStatus.I_PROCESS);
             applicantDTO.getApplicant().setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             applicantRepository.save(applicantDTO.getApplicant());
@@ -236,9 +239,9 @@ public class ApplicantController {
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */
     @PostMapping("/applicants/cancel-visitation")
-    public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO) {
+    public HttpStatus cancelVisitation(@RequestBody ApplicantDTO applicantDTO, @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         try {
-            emailService.sendCancelVisitationEmail(applicantDTO.getApplicant(), applicantDTO.getReason());
+            emailService.sendCancelVisitationEmail(applicantDTO.getApplicant(), applicantDTO.getReason(), graph);
             applicantDTO.getApplicant().setStatus(ApplicantStatus.IKKE_VISITERET);
             applicantDTO.getApplicant().setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             applicantRepository.save(applicantDTO.getApplicant());
@@ -255,9 +258,9 @@ public class ApplicantController {
      * @return either a http status of 200 or a status of 400 if something goes wrong
      */
     @PostMapping("/applicants/confirm-visitation")
-    public HttpStatus confirmVisitation(@RequestBody Applicant applicant) {
+    public HttpStatus confirmVisitation(@RequestBody Applicant applicant, @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         try {
-            emailService.sendConfirmationVisitationEmail(applicant);
+            emailService.sendConfirmationVisitationEmail(applicant, graph);
             applicant.setStatus(ApplicantStatus.VISITERET);
             applicant.setLastChanged(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             applicantRepository.save(applicant);

@@ -1,21 +1,23 @@
 package kea.gruppe1.exitcirklenbackend.config;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.function.client.WebClient;
+
+
 
 import java.util.Arrays;
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class AadOAuth2LoginSecurityConfig {
@@ -24,10 +26,21 @@ public class AadOAuth2LoginSecurityConfig {
      * Add configuration logic as needed.
      */
 
-    @Bean
+   /* @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll());
+        http.authorizeHttpRequests((auth) -> auth.anyRequest().authenticated());
         return http.build();
+    }
+*/
+    @Bean
+    public WebClient webClient(OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
+
+        ServletOAuth2AuthorizedClientExchangeFilterFunction function =
+                new ServletOAuth2AuthorizedClientExchangeFilterFunction(oAuth2AuthorizedClientManager);
+
+        return WebClient.builder()
+                .apply(function.oauth2Configuration())
+                .build();
     }
 
 
@@ -40,7 +53,7 @@ public class AadOAuth2LoginSecurityConfig {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         // Do some custom configuration.
     }
-*/
+
     CorsConfigurationSource corsConfigurationSource() {
         final var configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*", "**"));
@@ -53,5 +66,5 @@ public class AadOAuth2LoginSecurityConfig {
 
         return source;
     }
-
+*/
 }

@@ -3,34 +3,36 @@ package kea.gruppe1.exitcirklenbackend.controllers;
 import kea.gruppe1.exitcirklenbackend.models.Employee;
 import kea.gruppe1.exitcirklenbackend.models.EmployeeResponsibility;
 import kea.gruppe1.exitcirklenbackend.repositories.EmployeeRepository;
-import kea.gruppe1.exitcirklenbackend.services.RefreshTokenService;
+import kea.gruppe1.exitcirklenbackend.services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+//@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
 
     @Autowired
-    RefreshTokenService refreshTokenService;
-
+    GraphService graphService;
 
     /**
      * Gets all employees
      * @return a list of employees
      */
     @GetMapping("/employees")
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<Employee> getEmployees(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+        List<Employee> employees = employeeRepository.findAll();
+
+        graphService.fillEmployeeAadFields(employees, graph);
+
+        return employees;
     }
 
     /**
@@ -42,6 +44,18 @@ public class EmployeeController {
     public Employee getEmployee(@PathVariable Long id) {
         return employeeRepository.findById(id).orElse(null);
     }
+
+    @GetMapping("/employees/current")
+    public Employee getCurrentEmployee(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+
+        Employee employee = graphService.getCurrentEmployee(graph);
+
+        Optional<Employee> foundEmployee = employeeRepository.findByEmail(employee.getEmail());
+        return foundEmployee.orElseGet(() -> employeeRepository.save(employee)
+        );
+
+    }
+
 
     /**
      * Gets all employee responsibilities
@@ -93,12 +107,7 @@ public class EmployeeController {
     public HttpStatus updateEmployees(@PathVariable Long id,
                                       @RequestBody Employee employeeToUpdate) {
         employeeRepository.findById(id).map(employee -> {
-            if (employeeToUpdate.getName() != null) employee.setName(employeeToUpdate.getName());
-            if (employeeToUpdate.getAge() != 0) employee.setAge(employeeToUpdate.getAge());
-            if (employeeToUpdate.getEmail() != null) employee.setEmail(employeeToUpdate.getEmail());
             if (employeeToUpdate.getCity() != null) employee.setCity(employeeToUpdate.getCity());
-            if (employeeToUpdate.getPhoneNumber() != null) employee.setPhoneNumber(employeeToUpdate.getPhoneNumber());
-            if (employeeToUpdate.getRole() != null) employee.setRole(employeeToUpdate.getRole());
 
             employeeRepository.save(employee);
             return HttpStatus.OK;
@@ -114,7 +123,6 @@ public class EmployeeController {
     @DeleteMapping("/employees/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable Long id) {
         try {
-            refreshTokenService.deleteByUserId(id);
             employeeRepository.deleteById(id);
             return HttpStatus.OK;
         } catch (Exception e) {

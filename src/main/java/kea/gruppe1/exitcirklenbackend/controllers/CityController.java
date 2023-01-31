@@ -1,30 +1,44 @@
 package kea.gruppe1.exitcirklenbackend.controllers;
 
+import com.microsoft.graph.requests.GraphServiceClient;
+import kea.gruppe1.exitcirklenbackend.models.Applicant;
 import kea.gruppe1.exitcirklenbackend.models.City;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
+import kea.gruppe1.exitcirklenbackend.services.EmailService;
+import kea.gruppe1.exitcirklenbackend.services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+
 public class CityController {
 
     @Autowired
     CityRepository cityRepository;
 
+
+    @Autowired
+    GraphService graphService;
+
+    @Autowired
+    EmailService emailService;
+
     @GetMapping("/")
     @ResponseBody
-    @PreAuthorize("hasAuthority('SCOPE_User.Read')")
-    public String getget(@AuthenticationPrincipal AuthenticationPrincipal a) {
+    public String getget(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
 
-        System.out.println(a);
+        Applicant applicant = new Applicant();
+        applicant.setEmail("sverrireinert@gmail.com");
 
-        return "return";
+        emailService.sendWelcomeEmail(applicant, graph);
+        return "";
     }
 
     /**
@@ -32,7 +46,6 @@ public class CityController {
      * @return a list of cities
      */
     @GetMapping("/cities")
-    @CrossOrigin(origins = "http://localhost:3000")
     public List<City> getCities(@AuthenticationPrincipal AuthenticationPrincipal a) {
         System.out.println(a);
         return cityRepository.findAll();

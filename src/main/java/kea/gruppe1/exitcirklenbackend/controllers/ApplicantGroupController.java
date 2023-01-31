@@ -10,12 +10,14 @@ import kea.gruppe1.exitcirklenbackend.repositories.ApplicantRepository;
 import kea.gruppe1.exitcirklenbackend.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('GRUPPEANSVARLIG')")
+//@PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('GRUPPEANSVARLIG')")
 public class ApplicantGroupController {
 
     @Autowired
@@ -142,7 +144,7 @@ public class ApplicantGroupController {
      * @param ids a list of ids of the applicants in the group
      */
     @PostMapping("/groups/{id}/send-invites")
-    public void sendInvites(@PathVariable Long id, @RequestBody List<Long> ids){
+    public void sendInvites(@PathVariable Long id, @RequestBody List<Long> ids, @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph){
         ApplicantGroup group = applicantGroupRepository.getReferenceById(id);
         for(Long appId : ids){
             Applicant applicant = applicantRepository.getReferenceById(appId);
@@ -151,7 +153,7 @@ public class ApplicantGroupController {
             applicantRepository.save(applicant);
 
         }
-        emailService.sendInvitations(group, group.getInviteList());
+        emailService.sendInvitations(group, group.getInviteList(), graph);
         applicantGroupRepository.save(group);
     }
 }
